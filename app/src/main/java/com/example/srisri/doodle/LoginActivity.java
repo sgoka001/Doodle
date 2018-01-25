@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -309,6 +310,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
             try {
+                Log.v("background", "test");
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference ref = database.getReference("Users");
+                Query query = ref.orderByChild("email").equalTo(((EditText)findViewById(R.id.Email_Register_Input)).getText().toString());
                 // Simulate network access.
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
