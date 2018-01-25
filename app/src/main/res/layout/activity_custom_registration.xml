@@ -10,13 +10,12 @@
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editText2"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignStart="@+id/editText2"
-        android:layout_marginBottom="71dp"
+        android:layout_above="@+id/editText2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
         android:ems="10"
+        android:hint="@string/name"
         android:inputType="textPersonName"
-        android:text="@string/name"
         tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="49dp" />
 
@@ -29,8 +28,8 @@
         android:layout_alignStart="@+id/editText3"
         android:layout_marginBottom="43dp"
         android:ems="10"
+        android:hint="@string/email"
         android:inputType="textPersonName"
-        android:text="@string/email"
         tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="127dp" />
 
@@ -41,8 +40,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:ems="10"
+        android:hint="@string/custom_password"
         android:inputType="textPassword"
-        android:text="@string/custom_password"
         tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="216dp" />
 </RelativeLayout>

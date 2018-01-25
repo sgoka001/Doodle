@@ -3,6 +3,7 @@ package com.example.srisri.doodle;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +96,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        Button registerButton = (Button) findViewById(R.id.register_button);
+        registerButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent registerPage = new Intent(LoginActivity.this, CustomRegistration.class);
+                startActivity(registerPage);
             }
         });
 
@@ -310,23 +326,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
             try {
-                Log.v("background", "test");
-                final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                final DatabaseReference ref = database.getReference("Users");
-                Query query = ref.orderByChild("email").equalTo(((EditText)findViewById(R.id.Email_Register_Input)).getText().toString());
                 // Simulate network access.
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
             }
+            Log.v("background", "test");
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference ref = database.getReference("Users");
+            Query query = ref.orderByChild("email").equalTo(((EditText)findViewById(R.id.email)).getText().toString());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.v("login", "attempt");
+                    if(dataSnapshot.getValue() != null &&
+                            dataSnapshot.getChildren().iterator().next().child("password").getValue().toString().equals(((EditText)findViewById(R.id.password)).getText().toString())) {
+                        Log.v("database", dataSnapshot.getChildren().iterator().next().child("password").getValue().toString());
+                        Log.v("database", dataSnapshot.getValue().toString());
+                        Log.v("userid", dataSnapshot.getChildren().iterator().next().getKey());
+                        ((EditText)findViewById(R.id.email)).setText("");
+                        ((EditText)findViewById(R.id.password)).setText("");
+                    } else {
+                        Log.v("login", "failed");
+//                        return false;
+                    }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
                 }
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
             // TODO: register the new account here.
             return true;
