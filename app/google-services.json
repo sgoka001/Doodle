@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "195327920524",
+    "firebase_url": "https://shop-everywhere.firebaseio.com",
+    "project_id": "shop-everywhere",
+    "storage_bucket": "shop-everywhere.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195327920524:android:395e3a44f1219b3c",
+        "android_client_info": {
+          "package_name": "saltyhairbarefeet.shopeverywhere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195327920524-e2f9hpo0r2u1cjd99d75tbsd2i4r3r1m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhu8CTWysw0cSZOopJhACu3WBUh_bq1FU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
