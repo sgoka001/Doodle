@@ -48,7 +48,7 @@ public class CustomRegistration extends AppCompatActivity {
     public void createAccount() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference("Users");
-        Query query = ref.orderByChild("email").equalTo(((EditText)findViewById(R.id.editText)).getText().toString());
+        Query query = ref.orderByChild("email").equalTo(((EditText)findViewById(R.id.registration_name)).getText().toString());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

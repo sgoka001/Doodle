@@ -7,10 +7,10 @@
     tools:context="com.example.srisri.doodle.CustomRegistration">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/registration_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editText2"
+        android:layout_above="@+id/registration_email"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="25dp"
         android:ems="10"
@@ -20,21 +20,21 @@
         tools:layout_editor_absoluteY="49dp" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/registration_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editText3"
-        android:layout_alignLeft="@+id/editText3"
-        android:layout_alignStart="@+id/editText3"
-        android:layout_marginBottom="43dp"
+        android:layout_above="@+id/registration_password"
+        android:layout_alignLeft="@+id/registration_name"
+        android:layout_alignStart="@+id/registration_name"
+        android:layout_marginBottom="36dp"
         android:ems="10"
         android:hint="@string/email"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
         tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="127dp" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/registration_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -44,4 +44,16 @@
         android:inputType="textPassword"
         tools:layout_editor_absoluteX="32dp"
         tools:layout_editor_absoluteY="216dp" />
+
+    <Button
+        android:id="@+id/registration_complete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/registration_password"
+        android:layout_alignLeft="@+id/registration_password"
+        android:layout_alignRight="@+id/registration_password"
+        android:layout_alignStart="@+id/registration_password"
+        android:layout_below="@+id/registration_password"
+        android:layout_marginTop="29dp"
+        android:text="@string/enter" />
 </RelativeLayout>
