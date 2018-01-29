@@ -39,7 +39,7 @@
         android:inputType="textPersonName"
         android:text="Note"
         tools:layout_editor_absoluteX="62dp"
-        tools:layout_editor_absoluteY="360dp" />
+        tools:layout_editor_absoluteY="358dp" />
 
     <Button
         android:id="@+id/button3"
