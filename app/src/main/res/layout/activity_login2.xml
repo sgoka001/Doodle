@@ -87,8 +87,6 @@
                 android:text="@string/register"
                 android:textStyle="bold" />
 
-
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
