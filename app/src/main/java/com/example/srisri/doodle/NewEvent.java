@@ -42,4 +42,8 @@ public class NewEvent extends AppCompatActivity {
         });
 
     }
+    public void openMap(View view) {
+        Intent intent = new Intent(this, Location.class);
+        startActivity(intent);
+    }
 }

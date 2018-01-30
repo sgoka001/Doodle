@@ -26,7 +26,7 @@
     <string name="event_title_text">Title</string>
     <string name="event_optional">Optional</string>
     <string name="event_add_option">Add options</string>
-    <string name="event_location">Location</string>
+    <string name="event_location">Get address</string>
     <string name="event_note">Note</string>
     <string name="event_settings">Settings</string>
 </resources>
