@@ -25,7 +25,7 @@ public class NewEvent extends AppCompatActivity {
             }
         });
 
-        Button evLocation = findViewById(R.id.button3);
+        Button evLocation = findViewById(R.id.location_button);
         evLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
