@@ -46,5 +46,6 @@
         android:layout_alignStart="@+id/enter_button"
         android:layout_below="@+id/enter_button"
         android:layout_marginTop="32dp"
+        android:onClick="registerPage"
         android:text="@string/register" />
 </RelativeLayout>
