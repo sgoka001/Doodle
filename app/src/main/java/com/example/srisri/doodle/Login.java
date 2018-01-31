@@ -53,12 +53,10 @@ public class Login extends AppCompatActivity {
                 DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
                 if(dataSnapshot.getValue() != null &&
                         ret.child("password").getValue().toString().equals(((EditText)findViewById(R.id.password_login)).getText().toString())) {
-                    Intent homepage = new Intent(Login.this, Dashboard.class);
-                    homepage.putExtra("userID", dataSnapshot.getChildren().iterator().next().getKey());
-                    Log.v("userid", dataSnapshot.getChildren().iterator().next().getKey());
+                    Intent dashboard = new Intent(Login.this, Dashboard.class);
                     GlobalVars.getInstance().setUser(ret.child("name").getValue().toString(),
                             ret.child("email").getValue().toString(), ret.child("password").getValue().toString());
-                    startActivity(homepage);
+                    startActivity(dashboard);
                     ((EditText)findViewById(R.id.email_login)).setText("");
                     ((EditText)findViewById(R.id.password_login)).setText("");
 //                    findViewById(R.id.Invalid_Login).setVisibility(View.INVISIBLE);

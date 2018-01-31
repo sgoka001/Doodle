@@ -1,5 +1,6 @@
 package com.example.srisri.doodle;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,6 +54,11 @@ public class CustomRegistration extends AppCompatActivity {
                             user.put("email", ((EditText)findViewById(R.id.registration_email)).getText().toString());
                             user.put("password", ((EditText)findViewById(R.id.registration_password)).getText().toString());
                             ref.child(String.valueOf(Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1)).setValue(user);
+                            Intent dashboard = new Intent(CustomRegistration.this, Dashboard.class);
+                            Log.v("userid", dataSnapshot.getChildren().iterator().next().getKey());
+                            GlobalVars.getInstance().setUser(((EditText)findViewById(R.id.registration_name)).getText().toString(),
+                                    ((EditText)findViewById(R.id.registration_email)).getText().toString(), ((EditText)findViewById(R.id.registration_password)).getText().toString());
+                            startActivity(dashboard);
                             finish();
                         }
 
