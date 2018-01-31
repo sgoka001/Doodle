@@ -3,6 +3,7 @@
     <string name="username">Username</string>
     <string name="password">password</string>
     <string name="title_activity_login">Login</string>
+    <string name="welcome">Welcome to Doodle</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -18,7 +19,6 @@
     </string>
     <string name="login">LOGIN</string>
     <string name="register">REGISTER</string>
-    <string name="email">Email</string>
     <string name="name">Name</string>
     <string name="custom_password">Password</string>
     <string name="enter">ENTER</string>
@@ -33,4 +33,7 @@
     <string name="polls_created">Polls Created</string>
     <string name="polls_participated">Polls Participated</string>
     <string name="dashboard">DASHBOARD</string>
+    <string name="email">Email</string>
+    <string name="password_main">Password</string>
+    <string name="login_main">Login</string>
 </resources>
