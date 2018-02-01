@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="67dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="serif-monospace"
         android:text="@string/dashboard_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -51,7 +51,5 @@
         android:layout_below="@+id/create_event_button"
         android:layout_marginTop="65dp"
         android:text="@string/polls_created" />
-
-
 
 </RelativeLayout>

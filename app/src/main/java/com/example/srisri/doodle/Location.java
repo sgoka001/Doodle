@@ -3,6 +3,7 @@ package com.example.srisri.doodle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -40,14 +41,10 @@ public class Location extends AppCompatActivity {
             //store restaurant info
             name = place.getName();
             phone = place.getPhoneNumber();
-/*
-            //create a restaurant page for chosen place
-            Intent intent = new Intent(this, RestuarantMainPage.class);
-            startActivity(intent);
-*/
+
             //notification saying restaurant name
-            // String toastMsg = String.format("Place: %s", name);
-            // Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+            String toastMsg = String.format("Place: %s", name);
+            Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
         }
     }
 }
