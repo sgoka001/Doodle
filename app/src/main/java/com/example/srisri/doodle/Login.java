@@ -34,12 +34,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class Login extends AppCompatActivity {
 
     SignInButton googlebutton;
     FirebaseAuth authu;
     private final static int GOOGLESN = 2;
     GoogleSignInClient mGoogleSignInClient;
+    private DatabaseReference mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +148,57 @@ public class Login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
-                            FirebaseUser user = authu.getCurrentUser();
+                            final FirebaseUser user = authu.getCurrentUser();
+                            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            final DatabaseReference ref = database.getReference("Users");
+                            Query query = ref.orderByChild("email").equalTo(user.getEmail());
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.getChildrenCount() != 0){
+                                        //throw null because user found with email
+                                        Log.v("register", "error email already in use");
+                                    } else {
+                                        Query id = ref.orderByKey().limitToLast(1);
+                                        id.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                Log.v("register", dataSnapshot.getChildren().iterator().next().getKey());
+                                                Log.v("register", String.valueOf(Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1));
+                                                HashMap<String, Object> users = new HashMap<>();
+                                                users.put("name", (user.getDisplayName()));
+                                                users.put("email", ((user.getEmail())));
+                                                //users.put("password", ((EditText)findViewById(R.id.registration_password)).getText().toString());
+                                                ref.child(String.valueOf(Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1)).setValue(users);
+                                                Intent dashboard = new Intent(Login.this, Dashboard.class);
+                                                Log.v("userid", dataSnapshot.getChildren().iterator().next().getKey());
+                                                GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail());
+                                                startActivity(dashboard);
+                                                finish();
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            //User newU = new User(user.getEmail(), user.getDisplayName());
+
+                            //user.getDisplayName();
+                            mDatabase = FirebaseDatabase.getInstance().getReference();
+                            //mDatabase.child("Users").setValue(newU);
+
+
+
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -156,5 +210,21 @@ public class Login extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+    public class User
+    {
+        public String name;
+        public String email;
+
+        public User() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public User(String email, String name) {
+            this.name = name;
+            this.email = email;
+        }
+
     }
 }

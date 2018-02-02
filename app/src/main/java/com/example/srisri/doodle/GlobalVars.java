@@ -17,6 +17,12 @@ public class GlobalVars {
         userName = name;
         userPw = pw;
     }
+    //Kristen- created another constructor for the google login, not sure if this will mess anything else up
+    public  void setUser(String name, String email)
+    {
+        userEmail = email;
+        userName = name;
+    }
 
     public String getUserName(){
         return userName;
