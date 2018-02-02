@@ -57,4 +57,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp" />
 
+    <TextView
+        android:id="@+id/Invalid_Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password_login"
+        android:layout_centerHorizontal="true"
+        android:text="Username password combination not found"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="invisible" />
+
 </RelativeLayout>

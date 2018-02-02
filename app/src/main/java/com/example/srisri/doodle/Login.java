@@ -92,9 +92,9 @@ public class Login extends AppCompatActivity {
                     startActivity(dashboard);
                     ((EditText)findViewById(R.id.email_login)).setText("");
                     ((EditText)findViewById(R.id.password_login)).setText("");
-//                    findViewById(R.id.Invalid_Login).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.Invalid_Login).setVisibility(View.INVISIBLE);
                 } else {
-//                    findViewById(R.id.Invalid_Login).setVisibility(View.VISIBLE);
+                    findViewById(R.id.Invalid_Login).setVisibility(View.VISIBLE);
                 }
 
             }

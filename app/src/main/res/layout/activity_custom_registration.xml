@@ -56,4 +56,46 @@
         android:layout_below="@+id/registration_password"
         android:layout_marginTop="29dp"
         android:text="@string/enter" />
+
+    <TextView
+        android:id="@+id/email_already_used_registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/registration_password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="11dp"
+        android:text="This email has already been used for an account"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/email_error_registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/email_already_used_registration"
+        android:layout_centerHorizontal="true"
+        android:text="A valid email must contain an @ sign"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/invalid_password_registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registration_password"
+        android:layout_centerHorizontal="true"
+        android:text="Pasword Invalid. Please use a password of a minimum length of 7"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/empty_name_registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/registration_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:text="You can not have an empty name"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="invisible" />
 </RelativeLayout>
