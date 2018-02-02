@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +34,24 @@ public class CustomRegistration extends AppCompatActivity {
     }
 
     public void createAccount() {
+        Boolean valid = true;
+        if(!isEmailValid(((EditText)findViewById(R.id.registration_email)).getText().toString())) {
+            ((TextView)findViewById(R.id.email_error_registration)).setVisibility(View.VISIBLE);
+            valid = false;
+        } else
+            ((TextView)findViewById(R.id.email_error_registration)).setVisibility(View.INVISIBLE);
+        if(!isPasswordValid(((EditText)findViewById(R.id.registration_password)).getText().toString())){
+            ((TextView)findViewById(R.id.invalid_password_registration)).setVisibility(View.VISIBLE);
+            valid = false;
+        } else
+            ((TextView)findViewById(R.id.invalid_password_registration)).setVisibility(View.INVISIBLE);
+        if(((EditText)findViewById(R.id.registration_name)).getText().toString().length() == 0){
+            ((TextView)findViewById(R.id.empty_name_registration)).setVisibility(View.VISIBLE);
+            valid = false;
+        } else
+        ((TextView)findViewById(R.id.empty_name_registration)).setVisibility(View.INVISIBLE);
+        if(!valid)
+            return;
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference("Users");
         Query query = ref.orderByChild("email").equalTo(((EditText)findViewById(R.id.registration_email)).getText().toString());
@@ -42,6 +61,7 @@ public class CustomRegistration extends AppCompatActivity {
                 if(dataSnapshot.getChildrenCount() != 0){
                     //throw null because user found with email
                     Log.v("register", "error email already in use");
+                    ((TextView)findViewById(R.id.email_already_used_registration)).setVisibility(View.VISIBLE);
                 } else {
                     Query id = ref.orderByKey().limitToLast(1);
                     id.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -84,6 +104,6 @@ public class CustomRegistration extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 7;
     }
 }
