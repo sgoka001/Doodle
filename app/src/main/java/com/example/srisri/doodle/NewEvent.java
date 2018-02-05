@@ -20,7 +20,8 @@ public class NewEvent extends AppCompatActivity {
         Button evAddOptions = findViewById(R.id.button2);
         evAddOptions.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                //New intent will be made here (options page)
+                Intent intent = new Intent(NewEvent.this, AddOptionsCalendarActivity.class);
+                startActivity(intent);
             }
         });
 
