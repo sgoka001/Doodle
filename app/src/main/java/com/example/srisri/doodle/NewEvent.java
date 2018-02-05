@@ -24,14 +24,6 @@ public class NewEvent extends AppCompatActivity {
             }
         });
 
-        Button evLocation = findViewById(R.id.location_button);
-        evLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent for location page
-            }
-        });
-
         Button evSettings = findViewById(R.id.button4);
         evSettings.setOnClickListener(new View.OnClickListener() {
             @Override

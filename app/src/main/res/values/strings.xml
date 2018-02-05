@@ -37,4 +37,5 @@
     <string name="password_main">Password</string>
     <string name="login_main">Login</string>
     <string name="dashboard_title">Dashboard</string>
+    <string name="title_activity_get_address">Map</string>
 </resources>

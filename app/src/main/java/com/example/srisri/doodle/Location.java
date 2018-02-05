@@ -14,7 +14,7 @@ public class Location extends AppCompatActivity {
 
     int PLACE_PICKER_REQUEST = 1;
     public static CharSequence name;
-    public CharSequence phone;
+    public CharSequence address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class Location extends AppCompatActivity {
 
             //store restaurant info
             name = place.getName();
-            phone = place.getPhoneNumber();
+            address = place.getAddress();
 
             //notification saying restaurant name
             String toastMsg = String.format("Place: %s", name);
