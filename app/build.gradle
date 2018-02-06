@@ -17,10 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
     compile 'com.google.firebase:firebase-database:11.8.0'
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -33,10 +35,11 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.8.0'
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile 'com.squareup:android-times-square:1.5.0@aar'
-
-
-    implementation 'com.android.support:support-v4:26.1.0' //srisri
-    implementation 'com.google.android.gms:play-services:11.8.0' //srisri
-    implementation 'com.google.android.gms:play-services-location:11.8.0' //srisri
+    implementation 'com.android.support:support-v4:26.1.0'
+    //srisri
+    implementation 'com.google.android.gms:play-services:11.8.0'
+    //srisri
+    implementation 'com.google.android.gms:play-services-location:11.8.0'
+    //srisri
 }
 apply plugin: 'com.google.gms.google-services'
