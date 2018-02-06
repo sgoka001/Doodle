@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
-        android:text="@string/event_select_dates"
+        android:text="@string/select_dates"
         android:textColor="#FFFFFF" />
 
 </RelativeLayout >
