@@ -6,4 +6,17 @@
     android:layout_height="match_parent"
     tools:context="com.example.srisri.doodle.send_invite">
 
+    <AutoCompleteTextView
+        android:id="@+id/email_autocomplete_sendInvite"
+        android:layout_width="218dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:dropDownHeight="wrap_content"
+        android:dropDownWidth="match_parent"
+        android:hint="Search By Email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -40,7 +40,13 @@
         <activity android:name=".Location" />
         <activity android:name=".Dashboard" />
         <activity android:name=".NewEvent" />
-        <activity android:name=".send_invite"/>
+        <activity android:name=".send_invite">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+<!---->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
         <activity android:name=".AddOptionsCalendarActivity" />
     </application>
 
