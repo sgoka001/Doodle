@@ -26,6 +26,11 @@ public class GlobalVars {
         userName = name;
     }
 
+    public static void setUserId (String id)
+    {
+        userID = id;
+    }
+
     public static String getUserName(){
         return userName;
     }
