@@ -84,11 +84,20 @@ public class Dashboard extends AppCompatActivity {
         startActivity(loginscreen);
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        Button delButton = (Button) findViewById(R.id.btnDelAcc);
+        delButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteAccountPopup();
+            }
+        });
+
+
     }
     public void deleteAccountPopup(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -104,10 +113,30 @@ public class Dashboard extends AppCompatActivity {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Dashboard.this, "Account Deleted", Toast.LENGTH_LONG).show();
-                //delete account in database
-                deleteAcc();
-                //set the data of the username, email, pass to NULL
+
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(Dashboard.this);
+                View mView = getLayoutInflater().inflate(R.layout.activity_delete_acc, null);
+                Button mConfirm = mView.findViewById(R.id.btnYes);
+
+                mConfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(Dashboard.this, "Account Deleted", Toast.LENGTH_LONG).show();
+                        //delete account in database
+                        deleteAcc();
+                        //set the data of the username, email, pass to NULL
+                        GlobalVars.setUser(null,null, null, null);
+
+                        finish();
+
+                    }
+                });
+
+                mBuilder.setView(mView);
+                AlertDialog dialog = mBuilder.create();
+                dialog.show();
+
+
             }
         });
 
@@ -118,8 +147,9 @@ public class Dashboard extends AppCompatActivity {
     public void deleteAcc(){
 
 
+
         DatabaseReference drUser = FirebaseDatabase.getInstance().getReference("Users").child(GlobalVars.getUserID());
-        Log.v("referenceVal", drUser.toString());
+
         drUser.removeValue();
         Intent loginscreen = new Intent(this, Login.class);
         loginscreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

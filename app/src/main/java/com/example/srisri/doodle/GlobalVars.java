@@ -27,6 +27,11 @@ public class GlobalVars extends Application {
         userName = name;
     }
 
+    public static void setUserId (String id)
+    {
+        userID = id;
+    }
+
     public static String getUserName(){
         return userName;
     }
