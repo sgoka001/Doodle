@@ -80,7 +80,9 @@ public class CustomRegistration extends AppCompatActivity {
                             Intent dashboard = new Intent(CustomRegistration.this, Dashboard.class);
                             Log.v("userid", dataSnapshot.getChildren().iterator().next().getKey());
                             GlobalVars.getInstance().setUser(((EditText)findViewById(R.id.registration_name)).getText().toString(),
-                                    ((EditText)findViewById(R.id.registration_email)).getText().toString(), ((EditText)findViewById(R.id.registration_password)).getText().toString());
+                                    ((EditText)findViewById(R.id.registration_email)).getText().toString(),
+                                    ((EditText)findViewById(R.id.registration_password)).getText().toString(),
+                                    Integer.toString(Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1));
                             startActivity(dashboard);
                             finish();
                         }
@@ -107,6 +109,6 @@ public class CustomRegistration extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 7;
+        return password.length() >= 7;
     }
 }
