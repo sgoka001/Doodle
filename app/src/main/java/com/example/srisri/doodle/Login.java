@@ -71,6 +71,8 @@ public class Login extends AppCompatActivity {
             }
         });
         authu = FirebaseAuth.getInstance();
+
+
     }
     public void registerPage(View view) {
         Intent intent = new Intent(this, CustomRegistration.class);

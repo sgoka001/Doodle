@@ -52,4 +52,14 @@
         android:layout_marginTop="65dp"
         android:text="@string/polls_created" />
 
+    <Button
+        android:id="@+id/btnDelAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/del_acc" />
+
+
 </RelativeLayout>
