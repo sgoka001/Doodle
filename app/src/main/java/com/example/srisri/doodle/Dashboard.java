@@ -12,11 +12,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Dashboard extends AppCompatActivity {
 
+    FirebaseAuth auth;
+    FirebaseAuth.AuthStateListener authList;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -43,6 +46,11 @@ public class Dashboard extends AppCompatActivity {
         Intent loginscreen = new Intent(this, Login.class);
         loginscreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         GlobalVars.logout();
+        //if(auth.getCurrentUser()!= null)
+        //{
+           // auth = FirebaseAuth.getInstance();
+            //auth.signOut();
+        //}
         startActivity(loginscreen);
     }
 
@@ -112,6 +120,11 @@ public class Dashboard extends AppCompatActivity {
     }
     public void openEvent(View view) {
         Intent intent = new Intent(this, NewEvent.class);
+        startActivity(intent);
+    }
+
+    public void goToPollsCreated(View view) {
+        Intent intent = new Intent(this, PollsCreated.class);
         startActivity(intent);
     }
 }

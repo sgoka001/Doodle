@@ -1,10 +1,11 @@
 package com.example.srisri.doodle;
+import android.app.Application;
 
 /**
  * Created by Preston Giorgianni on 1/30/2018.
  */
 
-public class GlobalVars {
+public class GlobalVars extends Application {
     private static GlobalVars mInstance= null;
     private static String userName = null;
     private static String userEmail = null;
