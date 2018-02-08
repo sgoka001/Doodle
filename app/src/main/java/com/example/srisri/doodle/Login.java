@@ -93,18 +93,15 @@ public class Login extends AppCompatActivity {
     }
 
     private void login(){
-        Log.v("Login",((EditText)findViewById(R.id.email_login)).getText().toString());
-        Log.v("Login", ((EditText)findViewById(R.id.password_login)).getText().toString());
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("Users");
         Query query = ref.orderByChild("email").equalTo(((EditText)findViewById(R.id.email_login)).getText().toString());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.v("login", dataSnapshot.getValue().toString());
-                DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
                 if(dataSnapshot.getValue() != null &&
-                        ret.child("password").getValue().toString().equals(((EditText)findViewById(R.id.password_login)).getText().toString())) {
+                        dataSnapshot.getChildren().iterator().next().child("password").getValue().toString().equals(((EditText)findViewById(R.id.password_login)).getText().toString())) {
+                    DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
                     Intent dashboard = new Intent(Login.this, Dashboard.class);
                     GlobalVars.getInstance().setUser(ret.child("name").getValue().toString(),
                             ret.child("email").getValue().toString(), ret.child("password").getValue().toString(),
