@@ -74,6 +74,19 @@ public class Login extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account != null)
+        {
+            Intent dashboard = new Intent(Login.this, Dashboard.class);
+            startActivity(dashboard);
+        }
+
+    }
+
     public void registerPage(View view) {
         Intent intent = new Intent(this, CustomRegistration.class);
         startActivity(intent);
@@ -131,6 +144,8 @@ public class Login extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+                Intent dashboard = new Intent(Login.this, Dashboard.class);
+                startActivity(dashboard);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
@@ -198,6 +213,9 @@ public class Login extends AppCompatActivity {
 
                             //user.getDisplayName();
                             mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                            Intent dashboard = new Intent(Login.this, Dashboard.class);
+                            startActivity(dashboard);
                             //mDatabase.child("Users").setValue(newU);
 
 
