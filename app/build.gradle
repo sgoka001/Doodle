@@ -41,5 +41,6 @@ dependencies {
     //srisri
     implementation 'com.google.android.gms:play-services-location:11.8.0'
     //srisri
+    implementation 'com.android.support:cardview-v7:26.1.0'
 }
 apply plugin: 'com.google.gms.google-services'
