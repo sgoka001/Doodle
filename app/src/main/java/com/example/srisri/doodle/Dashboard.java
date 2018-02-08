@@ -34,7 +34,7 @@ public class Dashboard extends AppCompatActivity {
             case R.id.logout_menu:
                 logout();
                 return true;
-            case R.id.btnDelAcc:
+            case R.id.delete_account_menu:
                 deleteAccountPopup();
                 return true;
             default:
@@ -59,13 +59,13 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        Button delButton = (Button) findViewById(R.id.btnDelAcc);
-        delButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteAccountPopup();
-            }
-        });
+//        Button delButton = (Button) findViewById(R.id.btnDelAcc);
+//        delButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                deleteAccountPopup();
+//            }
+//        });
 
 
     }
@@ -77,30 +77,10 @@ public class Dashboard extends AppCompatActivity {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(Dashboard.this);
-                View mView = getLayoutInflater().inflate(R.layout.activity_delete_acc, null);
-                Button mConfirm = mView.findViewById(R.id.btnYes);
-
-                mConfirm.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(Dashboard.this, "Account Deleted", Toast.LENGTH_LONG).show();
-                        //delete account in database
-                        deleteAcc();
-                        //set the data of the username, email, pass to NULL
-                        GlobalVars.setUser(null,null, null, null);
-
-                        finish();
-
-                    }
-                });
-
-                mBuilder.setView(mView);
-                AlertDialog dialog = mBuilder.create();
-                dialog.show();
-
-
+                Toast.makeText(Dashboard.this, "Account Deleted", Toast.LENGTH_LONG).show();
+                //delete account in database
+                deleteAcc();
+                //set the data of the username, email, pass to NULL
             }
         });
 
