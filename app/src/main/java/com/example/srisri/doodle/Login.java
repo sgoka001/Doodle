@@ -92,7 +92,8 @@ public class Login extends AppCompatActivity {
                         ret.child("password").getValue().toString().equals(((EditText)findViewById(R.id.password_login)).getText().toString())) {
                     Intent dashboard = new Intent(Login.this, Dashboard.class);
                     GlobalVars.getInstance().setUser(ret.child("name").getValue().toString(),
-                            ret.child("email").getValue().toString(), ret.child("password").getValue().toString());
+                            ret.child("email").getValue().toString(), ret.child("password").getValue().toString(),
+                            ret.getKey().toString());
                     startActivity(dashboard);
                     ((EditText)findViewById(R.id.email_login)).setText("");
                     ((EditText)findViewById(R.id.password_login)).setText("");
