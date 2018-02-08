@@ -9,10 +9,11 @@ public class GlobalVars {
     private static String userName = null;
     private static String userEmail = null;
     private static String userPw = null;
+    private static String userId = null;
 
     protected GlobalVars(){}
 
-    public void setUser (String name, String email, String pw) {
+    public static void setUser (String name, String email, String pw) {
         userEmail = email;
         userName = name;
         userPw = pw;
@@ -24,8 +25,17 @@ public class GlobalVars {
         userName = name;
     }
 
-    public String getUserName(){
+    public static void setUserId(String Id)
+    {
+        userId = Id;
+    }
+
+    public static String getUserName(){
         return userName;
+    }
+
+    public static String getUserId(){
+        return userId;
     }
 
     public String getUserEmail(){

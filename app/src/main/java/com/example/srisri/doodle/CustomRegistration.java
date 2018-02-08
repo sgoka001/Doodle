@@ -73,6 +73,9 @@ public class CustomRegistration extends AppCompatActivity {
                             user.put("name", ((EditText)findViewById(R.id.registration_name)).getText().toString());
                             user.put("email", ((EditText)findViewById(R.id.registration_email)).getText().toString());
                             user.put("password", ((EditText)findViewById(R.id.registration_password)).getText().toString());
+
+                            GlobalVars.setUserId(String.valueOf(Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1));
+
                             ref.child(String.valueOf(Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1)).setValue(user);
                             Intent dashboard = new Intent(CustomRegistration.this, Dashboard.class);
                             Log.v("userid", dataSnapshot.getChildren().iterator().next().getKey());

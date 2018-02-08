@@ -5,6 +5,12 @@
     <string name="title_activity_login">Login</string>
     <string name="welcome">Welcome to Doodle</string>
 
+    <string name="select_dates">Select Dates</string>
+    <string name="del_acc">Delete Account</string>
+    <string name="del_acc_pop">Do you want to delete this account?</string>
+    <string name="yes">Confirm</string>
+    <string name="no">No</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="action_sign_in">Sign in or register</string>

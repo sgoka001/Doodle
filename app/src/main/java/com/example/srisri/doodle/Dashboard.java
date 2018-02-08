@@ -34,6 +34,9 @@ public class Dashboard extends AppCompatActivity {
                         deleteAcc();
                         //set the data of the username, email, pass to NULL
                         GlobalVars.setUser(null,null,null);
+
+                        finish();
+
                     }
                 });
 
@@ -46,7 +49,7 @@ public class Dashboard extends AppCompatActivity {
         });
     }
     public void deleteAcc(){
-        DatabaseReference drUser = FirebaseDatabase.getInstance().getReference("username").child(GlobalVars.getUserName());
+        DatabaseReference drUser = FirebaseDatabase.getInstance().getReference("Users").child(GlobalVars.getUserId());
         drUser.removeValue();
     }
     public void openEvent(View view) {
