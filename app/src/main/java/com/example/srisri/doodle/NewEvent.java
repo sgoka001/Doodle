@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NewEvent extends AppCompatActivity {
 
     @Override
@@ -24,6 +27,8 @@ public class NewEvent extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        List<String> selected_dates = new ArrayList<>();
+        selected_dates = (ArrayList<String>)getIntent().getSerializableExtra("SelectedDates");
 
         Button evSettings = findViewById(R.id.button4);
         evSettings.setOnClickListener(new View.OnClickListener() {
