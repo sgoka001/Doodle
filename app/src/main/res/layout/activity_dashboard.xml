@@ -25,10 +25,9 @@
         android:id="@+id/polls_participated_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/event_invite_scroll"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/polls_created_button"
-        android:layout_marginTop="56dp"
         android:onClick="goToPollsCreated"
         android:text="@string/polls_participated" />
 
@@ -47,12 +46,20 @@
         android:id="@+id/polls_created_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/event_invite_pending"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/create_event_button"
-        android:layout_marginTop="65dp"
+        android:layout_marginBottom="49dp"
         android:onClick="goToPollsCreated"
         android:text="@string/polls_created" />
+
+    <ListView
+        android:id="@+id/event_invite_pending"
+        android:layout_width="match_parent"
+        android:layout_height="124dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

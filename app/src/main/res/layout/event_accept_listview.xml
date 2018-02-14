@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/event_name_invite"
+        android:layout_width="259dp"
+        android:layout_height="62dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/accept_button_invite"
+        android:layout_width="127dp"
+        android:layout_height="31dp"
+        android:text="Accept"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/event_name_invite"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/decline_button_invite"
+        android:layout_width="124dp"
+        android:layout_height="31dp"
+        android:text="Decline"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/event_name_invite"
+        app:layout_constraintTop_toBottomOf="@+id/accept_button_invite" />
+</android.support.constraint.ConstraintLayout>

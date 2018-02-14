@@ -1,16 +1,23 @@
 package com.example.srisri.doodle;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -23,6 +30,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -92,14 +105,11 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-//        Button delButton = (Button) findViewById(R.id.btnDelAcc);
-//        delButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                deleteAccountPopup();
-//            }
-//        });
-
+        ArrayList<String> tmp = new ArrayList<String>(Arrays.asList("string 1", "string 2", "string 3", "String 4", "string 5"));
+        ListView invites = (ListView)findViewById(R.id.event_invite_pending);
+        AcceptEventAdapter acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, tmp);
+        Log.v("nullCheck", String.valueOf(invites == null));
+        invites.setAdapter(acceptInvites);
 
     }
     public void deleteAccountPopup(){
@@ -147,6 +157,55 @@ public class Dashboard extends AppCompatActivity {
     public void goToPollsCreated(View view) {
         Intent intent = new Intent(this, PollsCreated.class);
         startActivity(intent);
+    }
+
+    private class AcceptEventAdapter extends ArrayAdapter<String> {
+        private int layout;
+        public AcceptEventAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
+            super(context, resource, objects);
+            layout = resource;                Log.v("checkPoint", "testing4");
+
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            AcceptEventViewHolder mainHolder;
+            Log.v("checkPoint", "testing2");
+            if(convertView == null){
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(layout, parent, false);
+                Log.v("checkPoint", "testing");
+                AcceptEventViewHolder holder = new AcceptEventViewHolder();
+                holder.name = (TextView) convertView.findViewById(R.id.event_name_invite);
+                holder.Accept = (Button) convertView.findViewById(R.id.accept_button_invite);
+                holder.Accept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //add on click code
+                    }
+                });
+                holder.reject = (Button) convertView.findViewById(R.id.decline_button_invite);
+                holder.reject.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //add on click code
+                    }
+                });
+                convertView.setTag(holder);
+            } else {
+                Log.v("checkPoint", "testing3");
+                mainHolder = (AcceptEventViewHolder) convertView.getTag();
+                mainHolder.name.setText(getItem(position));
+            }
+            return convertView;
+        }
+    }
+
+    public class AcceptEventViewHolder {
+        TextView name;
+        Button Accept;
+        Button reject;
     }
 }
 
