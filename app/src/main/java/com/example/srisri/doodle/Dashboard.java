@@ -26,6 +26,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,6 +73,8 @@ public class Dashboard extends AppCompatActivity {
     }
 
     private void logout(){
+
+        Toast.makeText(Dashboard.this, "Logout", Toast.LENGTH_SHORT).show();
 
         /*if(auth.getCurrentUser()!= null)
         {
@@ -202,12 +205,7 @@ public class Dashboard extends AppCompatActivity {
     }
 
     public void deleteAccountPopup(){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
-        mGoogleSignInClient.revokeAccess();
+
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(Dashboard.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_delete_acc, null);
         Button mConfirm = mView.findViewById(R.id.btnYes);
@@ -229,10 +227,15 @@ public class Dashboard extends AppCompatActivity {
     public void deleteAcc(){
 
 
-
         DatabaseReference drUser = FirebaseDatabase.getInstance().getReference("Users").child(GlobalVars.getUserID());
 
         drUser.removeValue();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
+        mGoogleSignInClient.revokeAccess();
         Intent loginscreen = new Intent(this, Login.class);
         loginscreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         GlobalVars.logout();

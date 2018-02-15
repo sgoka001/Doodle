@@ -21,10 +21,11 @@ public class GlobalVars extends Application {
         userID = id;
     }
     //Kristen- created another constructor for the google login, not sure if this will mess anything else up
-    public  void setUser(String name, String email)
+    public  void setUser(String name, String email,String id)
     {
         userEmail = email;
         userName = name;
+        userID = id;
     }
 
     public static void setUserId (String id)

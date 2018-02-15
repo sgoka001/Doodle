@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.srisri.doodle">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -26,7 +25,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyD02zfklTnI-fiX5VTG6MnAHRpk27Evp4I" />
 
         <activity android:name=".Login">
             <intent-filter>
@@ -40,17 +39,10 @@
         <activity android:name=".Location" />
         <activity android:name=".Dashboard" />
         <activity android:name=".NewEvent" />
-        <activity android:name=".send_invite">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!--  -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+        <activity android:name=".send_invite"/>
         <activity android:name=".AddOptionsCalendarActivity" />
         <activity android:name=".Polling" />
-        <activity android:name=".PollsCreated"></activity>
+        <activity android:name=".PollsCreated"/>
     </application>
 
 </manifest>
