@@ -25,22 +25,22 @@
         android:id="@+id/polls_participated_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/event_invite_scroll"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="goToPollsCreated"
+        android:onClick="openEvent2"
         android:text="@string/polls_participated" />
+    <!--android:layout_above="@+id/event_invite_scroll"-->
 
     <Button
-        android:id="@+id/create_event_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="154dp"
-        android:onClick="openEvent"
-        android:text="@string/create_event" />
+    android:id="@+id/create_event_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="154dp"
+    android:onClick="openEvent2"
+    android:text="@string/create_event" />
 
     <Button
         android:id="@+id/polls_created_button"
@@ -50,7 +50,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="49dp"
-        android:onClick="goToPollsCreated"
+        android:onClick="openEvent"
         android:text="@string/polls_created" />
 
     <ListView

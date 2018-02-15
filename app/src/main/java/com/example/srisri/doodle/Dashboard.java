@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,7 +48,7 @@ import java.util.List;
 
 public class Dashboard extends AppCompatActivity {
 
-    FirebaseAuth auth;
+    FirebaseAuth authu;
     FirebaseAuth.AuthStateListener authList;
     GoogleSignInClient mGoogleSignInClient;
     @Override
@@ -113,6 +114,7 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
 
         final ListView invites = (ListView)findViewById(R.id.event_invite_pending);
         final AcceptEventAdapter acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, pendingInvites);
@@ -242,11 +244,13 @@ public class Dashboard extends AppCompatActivity {
         startActivity(loginscreen);
     }
     public void openEvent(View view) {
+        Toast.makeText(Dashboard.this,"Open Event", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, NewEvent.class);
         startActivity(intent);
     }
 
-    public void goToPollsCreated(View view) {
+    public void openEvent2(View view) {
+        Toast.makeText(Dashboard.this,"Polls Created", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, PollsCreated.class);
         startActivity(intent);
     }

@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,13 +20,45 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 
 public class PollsCreated extends AppCompatActivity {
-   // FirebaseAuth authu;
+   FirebaseAuth authu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_polls_created);
+        authu = FirebaseAuth.getInstance();
         TextView txt = (TextView) findViewById(R.id.textbox);
         txt.setText("Hello");
+        //String inst = GlobalVars.getInstance().getUserEmail();
+        final String inst = "pgior001@ucr.edu";
+
+        //final FirebaseUser user = authu.getCurrentUser();
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Events");
+        Query query = ref.orderByChild("owner").equalTo(inst);
+        Log.v("Query", query.toString());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null ) {
+                    DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
+                    String title=(ret.child("location").getValue().toString());
+                    Log.v("title", title);
+                    //GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
+                    //Log.v("key",ret.getKey().toString());
+                    Toast.makeText(PollsCreated.this, "Query Database", Toast.LENGTH_SHORT).show();
+                    Button button = (Button) findViewById(R.id.textView3);
+                    button.setText(title);
+                                                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+         //findViewById(R.id.textView3);
+
         /*GlobalVars globVar = ((GlobalVars)getApplicationContext());
         String emaillglobe = globVar.getUserEmail();
         final FirebaseUser user = authu.getCurrentUser();
