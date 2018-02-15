@@ -42,7 +42,8 @@ public class PollsCreated extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null ) {
                     DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
-                    String title=(ret.child("location").getValue().toString());
+                    String title=(ret.child("location").getValue().toString() + " \n" + ret.child("name").getValue().toString());
+                    GlobalVars.getInstance().setEventID(ret.getKey());
                     Log.v("title", title);
                     //GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
                     //Log.v("key",ret.getKey().toString());

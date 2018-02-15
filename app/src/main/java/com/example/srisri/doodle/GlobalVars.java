@@ -12,6 +12,8 @@ public class GlobalVars extends Application {
     private static String userPw = null;
     private static String userID = null;
 
+    private static String eventID = null;
+
     protected GlobalVars(){}
 
     public static void setUser (String name, String email, String pw, String id) {
@@ -45,6 +47,14 @@ public class GlobalVars extends Application {
 
     public static boolean checkPw(String check){
         return userPw.equals(check);
+    }
+
+    public static String getEventID() {
+        return eventID;
+    }
+
+    public static void setEventID(String eventID) {
+        GlobalVars.eventID = eventID;
     }
 
     public static void logout(){
