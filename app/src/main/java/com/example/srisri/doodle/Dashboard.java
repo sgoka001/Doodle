@@ -16,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,13 +29,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class Dashboard extends AppCompatActivity {
@@ -97,18 +105,102 @@ public class Dashboard extends AppCompatActivity {
         startActivity(loginscreen);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        ArrayList<String> tmp = new ArrayList<String>(Arrays.asList("string 1", "string 2", "string 3", "String 4", "string 5"));
-        ListView invites = (ListView)findViewById(R.id.event_invite_pending);
-        AcceptEventAdapter acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, tmp);
-        Log.v("nullCheck", String.valueOf(invites == null));
+        final ListView invites = (ListView)findViewById(R.id.event_invite_pending);
+        final AcceptEventAdapter acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, pendingInvites);
         invites.setAdapter(acceptInvites);
 
+        DatabaseReference dbUserInvites = FirebaseDatabase.getInstance().getReference("invites");
+        Query query = dbUserInvites.orderByChild("email").equalTo(GlobalVars.getUserEmail());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator invitesItterator = dataSnapshot.getChildren().iterator();
+                while(invitesItterator.hasNext()) {
+                    DataSnapshot tmp = (DataSnapshot) invitesItterator.next();
+                    Iterator childeren = tmp.getChildren().iterator();
+                    DataSnapshot checker = (DataSnapshot)childeren.next();
+                    Boolean valid = true;
+                    int eventId = 0;
+                    while (checker != null){
+                        String Key = checker.getKey();
+                        switch(Key){
+                            case "accepted":
+                                if(checker.getValue().equals("true"))
+                                    valid = false;
+                                break;
+                            case "declined":
+                                if(checker.getValue().equals("true"))
+                                    valid = false;
+                                break;
+                            case "eventId":
+                                eventId = Integer.parseInt(checker.getValue().toString());
+                                break;
+                            default:
+                                break;
+                        }
+                        if(childeren.hasNext())
+                            checker = (DataSnapshot)childeren.next();
+                        else
+                            break;
+                    }
+                    if(valid){
+                        getEventDetails(eventId, tmp.getKey(), acceptInvites, invites);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
+
+    ArrayList<String> pendingInvites = new ArrayList<String>();
+    ArrayList<String> pendingInviteIds = new ArrayList<String>();
+
+    public void getEventDetails(int eventId, final String key, final AcceptEventAdapter acceptInvites, final ListView list){
+        Log.v("testing", "looking for event");
+        DatabaseReference dbUserInvites = FirebaseDatabase.getInstance().getReference("Events");
+        Query query = dbUserInvites.orderByKey().equalTo(String.valueOf(eventId));
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator event = dataSnapshot.getChildren().iterator();
+                while(event.hasNext()){
+                    DataSnapshot child = (DataSnapshot)event.next();
+                    Iterator details = child.getChildren().iterator();
+                    while(details.hasNext()) {
+                        DataSnapshot childDetails = (DataSnapshot)details.next();
+                        Log.v("testing", childDetails.getKey());
+                        if (childDetails.getKey().equals("name")) {
+                            Log.v("testingadd", "event found");
+                            synchronized (pendingInvites){
+                                pendingInvites.add(pendingInvites.size() + ") " + childDetails.getValue().toString());
+                                pendingInviteIds.add(key);
+                                acceptInvites.notifyDataSetChanged();
+                            }
+                            break;
+                        }
+                    }
+                }
+                Log.v("testing", pendingInvites.toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void deleteAccountPopup(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -160,26 +252,26 @@ public class Dashboard extends AppCompatActivity {
         private int layout;
         public AcceptEventAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
             super(context, resource, objects);
-            layout = resource;                Log.v("checkPoint", "testing4");
-
+            layout = resource;
         }
 
         @NonNull
         @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             AcceptEventViewHolder mainHolder;
-            Log.v("checkPoint", "testing2");
             if(convertView == null){
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(layout, parent, false);
-                Log.v("checkPoint", "testing");
-                AcceptEventViewHolder holder = new AcceptEventViewHolder();
+                final AcceptEventViewHolder holder = new AcceptEventViewHolder();
                 holder.name = (TextView) convertView.findViewById(R.id.event_name_invite);
+                holder.name.setText(pendingInvites.get(position));
                 holder.Accept = (Button) convertView.findViewById(R.id.accept_button_invite);
                 holder.Accept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //add on click code
+                        Log.v("click", "accept:" + position);
+                        Log.v("click", holder.name.getText().toString());
                     }
                 });
                 holder.reject = (Button) convertView.findViewById(R.id.decline_button_invite);
@@ -187,11 +279,11 @@ public class Dashboard extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //add on click code
+                        Log.v("click", "decline:" + position);
                     }
                 });
                 convertView.setTag(holder);
             } else {
-                Log.v("checkPoint", "testing3");
                 mainHolder = (AcceptEventViewHolder) convertView.getTag();
                 mainHolder.name.setText(getItem(position));
             }

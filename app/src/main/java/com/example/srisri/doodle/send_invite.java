@@ -124,8 +124,9 @@ public class send_invite extends AppCompatActivity {
                 for(int i = 0; i < setEmails.size(); ++i){
                     HashMap<String, Object> invite = new HashMap<>();
                     invite.put("email", setEmails.get(i));
-                    invite.put("enevtId", 1);
+                    invite.put("eventId", 1);
                     invite.put("accepted", false);
+                    invite.put("declined", false);
                     ref.child(Integer.toString(first  + i)).setValue(invite);
                 }
             }
