@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.ToggleButton;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -58,6 +60,9 @@ public class NewEvent extends AppCompatActivity {
             }
         });
 
+        final ToggleButton togglebutton1 = findViewById(R.id.toggleButton);
+        final ToggleButton togglebutton2 = findViewById(R.id.toggleButton2);
+
         Button evFinish = findViewById(R.id.button3);
         evFinish.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -82,15 +87,17 @@ public class NewEvent extends AppCompatActivity {
                 String note = evNote.getText().toString();
                 //myRef = database.getReference("Events/" + eventID.toString() + "/note/");
                 //myRef.setValue(note);
+                boolean yesNoCheck = togglebutton1.isChecked();
+                boolean limitCheck = togglebutton2.isChecked();
+                String yesno = String.valueOf(yesNoCheck);
+                String limit = String.valueOf(limitCheck);
+                //myRef = database.getReference("Events/" + eventID.toString() + "/yesno/");
+                //myRef.setValue(yesno);
+                //myRef = database.getReference("Events/" + eventID.toString() + "/limit/");
+                //myRef.setValue(limit);
             }
         });
-        Button evSettings = findViewById(R.id.button4);
-        evSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent for settings page
-            }
-        });
+
 
     }
     public void openMap(View view) {
