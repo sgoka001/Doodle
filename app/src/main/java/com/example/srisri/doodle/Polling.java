@@ -1,19 +1,13 @@
 package com.example.srisri.doodle;
 
-
-import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -26,10 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Map;
 
 
 /**
@@ -63,6 +54,26 @@ public class Polling extends AppCompatActivity {
 
         //GetInviteId from dashboard
         inviteid = 7;
+        //Check if accepted
+        DatabaseReference myRefAccept = database.getReference("invites/"+ inviteid.toString() +"/accepted");
+        myRefAccept.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                boolean accept = dataSnapshot.getValue(boolean.class);
+                //if it wasn't accepted yet we should open popup
+                if(!accept)
+                {
+                    acceptPollPopUp();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Toast.makeText(Polling.this,"Fail",Toast.LENGTH_LONG).show();
+            }
+        });
+
         //Get inviteKeys
         DatabaseReference myRefkeys = database.getReference("invites/"+ inviteid.toString() );
         myRefkeys.addValueEventListener(new ValueEventListener() {
@@ -159,35 +170,12 @@ public class Polling extends AppCompatActivity {
                         Integer id = 100;
                         choiceId = new ArrayList<Integer>();
                         for(String choice : choiceList){
-                            testing = testing + choice + " : ";
 
                             //Create check boxes
                             boxChoice = new CheckBox(Polling.this);
                             boxChoice.setText(choice);
                             boxChoice.setId(id);
                             choiceId.add(id);
-                            if(inviteKeys.contains(choice))
-                            {
-                                DatabaseReference myRefInvKey = database.getReference("invites/"+ inviteid.toString() + "/" + choice);
-                                myRefInvKey.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        // This method is called once with the initial value and again
-                                        // whenever data at this location is updated.
-                                        temp = dataSnapshot.getValue(boolean.class);
-                                        if(temp) {
-                                            Toast.makeText(Polling.this, "FIRSTSTOAST", Toast.LENGTH_LONG).show();
-                                            boxChoice.setChecked(true);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError error) {
-                                        // Failed to read value
-                                        Toast.makeText(Polling.this, "Failed to create checkbox from database" ,Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                            }
                             id = id + 1;
                             boxChoice.setOnClickListener(getOnClickChangeBool(boxChoice));
                             boxContiner.addView(boxChoice);
@@ -197,22 +185,24 @@ public class Polling extends AppCompatActivity {
                         //Add Cannot Attend Check Box (if) checked make all others false
                         boxChoice = new CheckBox(Polling.this);
                         boxChoice.setText("Cannot Attend");
-                        DatabaseReference myRefnoAttend = database.getReference("invites/"+ inviteid.toString() + "/declined");
-                        myRefnoAttend.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                // This method is called once with the initial value and again
-                                // whenever data at this location is updated.
-                                boolean value = dataSnapshot.getValue(boolean.class);
-                                boxChoice.setChecked(value);
-                            }
+                        if(inviteKeys.contains("noAttend")) {
+                            DatabaseReference myRefnoAttend = database.getReference("invites/" + inviteid.toString() + "/noAttend");
+                            myRefnoAttend.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    // This method is called once with the initial value and again
+                                    // whenever data at this location is updated.
+                                    boolean value = dataSnapshot.getValue(boolean.class);
+                                    boxChoice.setChecked(value);
+                                }
 
-                            @Override
-                            public void onCancelled(DatabaseError error) {
-                                // Failed to read value
-                                Toast.makeText(Polling.this, "Failed to create checkbox from database" ,Toast.LENGTH_LONG).show();
-                            }
-                        });
+                                @Override
+                                public void onCancelled(DatabaseError error) {
+                                    // Failed to read value
+                                    Toast.makeText(Polling.this, "Failed to create checkbox from database", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
                         boxChoice.setId(id);
                         choiceId.add(id);
                         id = id + 1;
@@ -222,7 +212,6 @@ public class Polling extends AppCompatActivity {
 
                         //Add cannot attend button to the check box container
                         boxContiner.addView(boxChoice);
-
 
                         //Submit Button
                         Button btnSubmit = new Button(Polling.this);
@@ -239,8 +228,41 @@ public class Polling extends AppCompatActivity {
 
                         //Add container into scroll view
                         svPoll.addView(boxContiner);
-//                Toast.makeText(Polling.this,testing, Toast.LENGTH_LONG ).show();
 
+
+                        //Check inside database and pull the correct values for checkboxes
+                        for(Integer i = 0; i < choiceId.size(); i++){
+                            //check if i is in choice list size
+                            if(i < choiceList.size()) {
+                                //check if invite keys contains the choice
+                                if (inviteKeys.contains(choiceList.get(i))) {
+                                    //pull database reference of choice and get the id of the correct button
+                                    DatabaseReference memRef = database.getReference("invites/" + inviteid.toString() + "/" + choiceList.get(i));
+                                    final Integer true_id = getResources().getIdentifier(choiceId.get(i).toString(), "id",getPackageName());
+
+                                    //pull data from database and boxchoice to true if it was true in database
+                                    memRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            // This method is called once with the initial value and again
+                                            // whenever data at this location is updated.
+                                            temp = dataSnapshot.getValue(boolean.class);
+                                            if (temp) {
+                                                boxChoice = findViewById(true_id);
+
+                                                boxChoice.setChecked(true);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError error) {
+                                            // Failed to read value
+                                            Toast.makeText(Polling.this, "Failed to create checkbox from database", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                            }
+                        }
                     }
 
                     @Override
@@ -284,11 +306,11 @@ public class Polling extends AppCompatActivity {
             public void onClick(View v){
                 if(box.isChecked()){
                     //How to get all checked Boxes on page
-                   for(Integer id = choiceId.get(0); id < choiceId.get(choiceId.size() - 1); id++){
-                       Integer true_id = getResources().getIdentifier(id.toString(), "id",getPackageName());
-                       CheckBox box = findViewById(true_id);
-                       box.setChecked(false);
-                   }
+                    for(Integer id = choiceId.get(0); id < choiceId.get(choiceId.size() - 1); id++){
+                        Integer true_id = getResources().getIdentifier(id.toString(), "id",getPackageName());
+                        CheckBox box = findViewById(true_id);
+                        box.setChecked(false);
+                    }
                 }
             }
         };
@@ -306,8 +328,7 @@ public class Polling extends AppCompatActivity {
             DatabaseReference myRef;
             //Going through all choices in choice list
             if(i < choiceList.size()){
-                myRef = database.getReference("invites/"+ inviteid.toString() +
-                        "/"+choiceList.get(i));
+                myRef = database.getReference("invites/"+ inviteid.toString() + "/"+choiceList.get(i));
 
                 Integer true_id = getResources().getIdentifier(choiceId.get(i).toString(), "id",getPackageName());
                 CheckBox box = findViewById(true_id);
@@ -319,19 +340,19 @@ public class Polling extends AppCompatActivity {
             }
             //this should be accessed only once for last check box (cannot attend)
             else{
-                myRef = database.getReference("invites/"+ inviteid.toString() + "/declined");
+                myRef = database.getReference("invites/"+ inviteid.toString() + "/noAttend");
 
                 Integer true_id = getResources().getIdentifier(choiceId.get(i).toString(), "id",getPackageName());
                 CheckBox box = findViewById(true_id);
                 myRef.setValue(box.isChecked());
-                if(!box.isChecked() && didNothing){
-                    myRef = database.getReference("invites/"+ inviteid.toString() + "/accepted");
-                    myRef.setValue(false);
-                }
-                else{
-                    myRef = database.getReference("invites/"+ inviteid.toString() + "/accepted");
-                    myRef.setValue(!box.isChecked());
-                }
+//                if(!box.isChecked() && didNothing){
+//                    myRef = database.getReference("invites/"+ inviteid.toString() + "/accepted");
+//                    myRef.setValue(false);
+//                }
+//                else{
+//                    myRef = database.getReference("invites/"+ inviteid.toString() + "/accepted");
+//                    myRef.setValue(!box.isChecked());
+//                }
             }
         }
 
@@ -342,7 +363,45 @@ public class Polling extends AppCompatActivity {
         dashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(dashboard);
     }
+
+    public void acceptPollPopUp(){
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Polling.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_accept_poll, null);
+        Button mAccept = mView.findViewById(R.id.btnYes);
+        Button mDecline = mView.findViewById(R.id.btnNo);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+
+        mAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference myRef = database.getReference("invites/"+ inviteid.toString() + "/accepted");
+                myRef.setValue(true);
+                myRef = database.getReference("invites/"+ inviteid.toString() + "/declined");
+                myRef.setValue(false);
+                dialog.dismiss();
+            }
+        });
+
+        mDecline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseReference myRef = database.getReference("invites/"+ inviteid.toString() + "/accepted");
+                myRef.setValue(false);
+                myRef = database.getReference("invites/"+ inviteid.toString() + "/declined");
+                myRef.setValue(true);
+                backToDash();
+            }
+        });
+
+        dialog.show();
+    }
+    public void backToDash(){
+        Intent dashboard = new Intent(this, Dashboard.class);
+        dashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(dashboard);
+    }
+
 }
-
-
-
