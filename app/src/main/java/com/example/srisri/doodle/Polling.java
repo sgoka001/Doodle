@@ -54,6 +54,7 @@ public class Polling extends AppCompatActivity {
 
         //GetInviteId from dashboard
         inviteid = 7;
+        //inviteid = GlobalVars.getEventID();       // set inviteid to a string and remove toString from every time it is called
         //Check if accepted
         DatabaseReference myRefAccept = database.getReference("invites/"+ inviteid.toString() +"/accepted");
         myRefAccept.addValueEventListener(new ValueEventListener() {
