@@ -41,6 +41,9 @@ public class Location extends AppCompatActivity {
             //store restaurant info
             name = place.getName();
             address = place.getAddress();
+            String location = name + ": " + address;
+            Intent event_location = new Intent(Location.this, NewEvent.class);
+            event_location.putExtra("location", location);
 
             //notification saying restaurant name
             String toastMsg = String.format("Place: %s", name);
