@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/polls_created_button"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="40dp"
         android:onClick="openEvent2"
         android:text="@string/polls_participated" />
 
@@ -24,7 +24,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView2"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="38dp"
         android:onClick="openEvent"
         android:text="@string/create_event" />
 
@@ -35,7 +35,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/create_event_button"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="39dp"
         android:onClick="openEvent2"
         android:text="@string/polls_created" />
 
@@ -46,7 +46,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="59dp"
         android:text="@string/dashboard"
         android:textAlignment="center"
         android:textSize="30sp"
@@ -61,14 +60,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-
-    <!--<Button-->
-    <!--android:id="@+id/toPoll"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_alignParentEnd="true"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:text="Button" />-->
+    <TextView
+        android:id="@+id/pending_invites_label"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_above="@+id/event_invite_pending"
+        android:layout_centerHorizontal="true"
+        android:text="Pending Invites"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
 </RelativeLayout>

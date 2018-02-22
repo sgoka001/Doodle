@@ -1,5 +1,9 @@
 package com.example.srisri.doodle;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +39,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class Login extends AppCompatActivity {
 
@@ -72,6 +77,35 @@ public class Login extends AppCompatActivity {
             }
         });
         authu = FirebaseAuth.getInstance();
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String id = sharedPref.getString("id", "none");
+        if(!id.equals("none")){
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("Users");
+            Query query = ref.orderByKey().equalTo(id);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterator childeren =  dataSnapshot.getChildren().iterator().next().getChildren().iterator();
+                    while(childeren.hasNext()){
+                        DataSnapshot child = (DataSnapshot)childeren.next();
+                        if(child.getKey().equals("password")){
+                            if(child.getValue().toString().equals(sharedPref.getString("password", "none"))){
+                                GlobalVars.getInstance().setUser(sharedPref.getString("name", "none"),
+                                        sharedPref.getString("userEmail", "none"), sharedPref.getString("password", "none"),
+                                        sharedPref.getString("id", "none"));
+                                Intent dashboard = new Intent(Login.this, Dashboard.class);
+                                startActivity(dashboard);
+                            }
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
 
     }
@@ -188,13 +222,21 @@ public class Login extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null &&
+                Log.v("testtest", dataSnapshot.toString());
+                if(dataSnapshot.getValue() != null && dataSnapshot.getChildren().iterator().next().child("password").getValue() != null &&
                         dataSnapshot.getChildren().iterator().next().child("password").getValue().toString().equals(((EditText)findViewById(R.id.password_login)).getText().toString())) {
                     DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
                     Intent dashboard = new Intent(Login.this, Dashboard.class);
                     GlobalVars.getInstance().setUser(ret.child("name").getValue().toString(),
                             ret.child("email").getValue().toString(), ret.child("password").getValue().toString(),
                             ret.getKey().toString());
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("userEmail", ret.child("email").getValue().toString());
+                    editor.putString("password", ret.child("password").getValue().toString());
+                    editor.putString("name", ret.child("name").getValue().toString());
+                    editor.putString("id", ret.getKey().toString());
+                    editor.commit();
                     startActivity(dashboard);
                     ((EditText)findViewById(R.id.email_login)).setText("");
                     ((EditText)findViewById(R.id.password_login)).setText("");

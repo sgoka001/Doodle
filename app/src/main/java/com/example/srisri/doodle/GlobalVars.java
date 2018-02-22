@@ -1,5 +1,8 @@
 package com.example.srisri.doodle;
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 /**
  * Created by Preston Giorgianni on 1/30/2018.
