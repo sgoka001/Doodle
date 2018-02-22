@@ -44,4 +44,8 @@
     <string name="login_main">Login</string>
     <string name="dashboard_title">Dashboard</string>
     <string name="title_activity_get_address">Map</string>
+    <string name="yes_no_vote">Yes/No Votes</string>
+    <string name="limit_votes">Limit Votes</string>
+    <string name="add_time_day">Add</string>
+    <string name="finish_event">Finish</string>
 </resources>
