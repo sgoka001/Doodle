@@ -81,16 +81,19 @@ public class NewEvent extends AppCompatActivity {
                 }
                 EditText evTitle = findViewById(R.id.editText);
                 String title = evTitle.getText().toString();
-                //DatabaseReference myRef = database.getReference("Events/" + eventID.toString() + "/title/");
+                //DatabaseReference myRef = database.getReference("Events/" + eventID.toString() + "/name");
                 //myRef.setValue(title);
                 EditText evNote = findViewById(R.id.editText2);
                 String note = evNote.getText().toString();
                 //myRef = database.getReference("Events/" + eventID.toString() + "/note/");
                 //myRef.setValue(note);
-                boolean yesNoCheck = togglebutton1.isChecked();
-                boolean limitCheck = togglebutton2.isChecked();
-                String yesno = String.valueOf(yesNoCheck);
-                String limit = String.valueOf(limitCheck);
+                String location = getIntent().getStringExtra("location");
+                //myRef = database.getReference("Events/" + eventID.toString() + "/location");
+                //myRef.setValue(location);
+                //boolean yesNoCheck = togglebutton1.isChecked();
+                //boolean limitCheck = togglebutton2.isChecked();
+                //String yesno = String.valueOf(yesNoCheck);
+                //String limit = String.valueOf(limitCheck);
                 //myRef = database.getReference("Events/" + eventID.toString() + "/yesno/");
                 //myRef.setValue(yesno);
                 //myRef = database.getReference("Events/" + eventID.toString() + "/limit/");
