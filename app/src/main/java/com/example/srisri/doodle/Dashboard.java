@@ -253,9 +253,15 @@ public class Dashboard extends AppCompatActivity {
         GlobalVars.logout();
         startActivity(loginscreen);
     }
+    /*
     public void openEvent(View view) {
         Toast.makeText(Dashboard.this,"Open Event", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, NewEvent.class);
+        startActivity(intent);
+    }
+    */
+    public void openMap(View view) {
+        Intent intent = new Intent(this, Location.class);
         startActivity(intent);
     }
 

@@ -71,10 +71,7 @@ public class NewEvent extends AppCompatActivity {
 
 
     }
-    public void openMap(View view) {
-        Intent intent = new Intent(this, Location.class);
-        startActivity(intent);
-    }
+
     public void finishEvent(View v) {
         DatabaseReference ref = database.getReference("Events");
         Query query = ref.orderByChild("owner").equalTo(GlobalVars.getUserID());
