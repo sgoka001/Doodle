@@ -14,7 +14,7 @@ public class Location extends AppCompatActivity {
 
     int PLACE_PICKER_REQUEST = 1;
     public static CharSequence name;
-    public CharSequence address;
+    public static CharSequence address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

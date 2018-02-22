@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +33,9 @@ public class NewEvent extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
+
+        TextView displayName = findViewById(R.id.LocName);
+        displayName.setText(Location.address);
 
         Button evAddOptions = findViewById(R.id.button2);
         evAddOptions.setOnClickListener(new View.OnClickListener() {
