@@ -2,6 +2,8 @@ package com.example.srisri.doodle;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -74,6 +76,13 @@ public class Dashboard extends AppCompatActivity {
     }
 
     private void logout(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("userEmail", "none");
+        editor.putString("password", "none");
+        editor.putString("name", "none");
+        editor.putString("id", "none");
+        editor.commit();
 
         Toast.makeText(Dashboard.this, "Logout", Toast.LENGTH_SHORT).show();
 
@@ -109,6 +118,7 @@ public class Dashboard extends AppCompatActivity {
         startActivity(loginscreen);
     }
 
+    AcceptEventAdapter acceptInvites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +127,7 @@ public class Dashboard extends AppCompatActivity {
 
 
         final ListView invites = (ListView)findViewById(R.id.event_invite_pending);
-        final AcceptEventAdapter acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, pendingInvites);
+        acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, pendingInvites);
         invites.setAdapter(acceptInvites);
 
         DatabaseReference dbUserInvites = FirebaseDatabase.getInstance().getReference("invites");
@@ -136,11 +146,11 @@ public class Dashboard extends AppCompatActivity {
                         String Key = checker.getKey();
                         switch(Key){
                             case "accepted":
-                                if(checker.getValue().equals("true"))
+                                if(String.valueOf(checker.getValue()).equals("true"))
                                     valid = false;
                                 break;
                             case "declined":
-                                if(checker.getValue().equals("true"))
+                                if(String.valueOf(checker.getValue()).equals("true"))
                                     valid = false;
                                 break;
                             case "eventId":
@@ -276,17 +286,26 @@ public class Dashboard extends AppCompatActivity {
                 holder.Accept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //add on click code
-                        Log.v("click", "accept:" + position);
-                        Log.v("click", holder.name.getText().toString());
+                        DatabaseReference dbUserInvites = FirebaseDatabase.getInstance().getReference("invites");
+                        int id = pendingInvites.indexOf(holder.name.getText());
+                        String eventId = pendingInviteIds.get(id);
+                        dbUserInvites.child(eventId).child("accepted").setValue(true);
+                        pendingInviteIds.remove(id);
+                        pendingInvites.remove(id);
+                        acceptInvites.notifyDataSetChanged();
                     }
                 });
                 holder.reject = (Button) convertView.findViewById(R.id.decline_button_invite);
                 holder.reject.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //add on click code
-                        Log.v("click", "decline:" + position);
+                        DatabaseReference dbUserInvites = FirebaseDatabase.getInstance().getReference("invites");
+                        int id = pendingInvites.indexOf(holder.name.getText());
+                        String eventId = pendingInviteIds.get(id);
+                        dbUserInvites.child(eventId).child("declined").setValue(true);
+                        pendingInviteIds.remove(id);
+                        pendingInvites.remove(id);
+                        acceptInvites.notifyDataSetChanged();
                     }
                 });
                 convertView.setTag(holder);
