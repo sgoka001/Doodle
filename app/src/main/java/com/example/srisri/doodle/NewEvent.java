@@ -78,7 +78,7 @@ public class NewEvent extends AppCompatActivity {
 
     public void finishEvent(View v) {
         DatabaseReference ref = database.getReference("Events");
-        Query query = ref.orderByChild("owner").equalTo(GlobalVars.getUserID());
+        Query query = ref.orderByKey().limitToLast(1);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
