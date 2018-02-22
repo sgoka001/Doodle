@@ -29,6 +29,9 @@ public class NewEvent extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     final List<String> selected_times = new ArrayList<String>();
+    List<String> selected_dates;
+    final ToggleButton togglebutton1 = findViewById(R.id.toggleButton);
+    final ToggleButton togglebutton2 = findViewById(R.id.toggleButton2);
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -41,7 +44,7 @@ public class NewEvent extends AppCompatActivity {
         evAddOptions.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 Intent intent = new Intent(NewEvent.this, AddOptionsCalendarActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         final Spinner dropdown = findViewById(R.id.spinner);
@@ -52,12 +55,12 @@ public class NewEvent extends AppCompatActivity {
 
         final Spinner dropdown2 = findViewById(R.id.spinner2);
         String[] items2 = new String[]{"00", "15", "30", "45"};
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items2);
         dropdown2.setAdapter(adapter2);
 
         final Spinner dropdown3 = findViewById(R.id.spinner3);
         String[] items3 = new String[]{"AM", "PM"};
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items3);
         dropdown3.setAdapter(adapter3);
 
         Button evAddOptionDT = findViewById(R.id.button5);
@@ -69,11 +72,6 @@ public class NewEvent extends AppCompatActivity {
                 selected_times.add(spinnertext);
             }
         });
-
-        final ToggleButton togglebutton1 = findViewById(R.id.toggleButton);
-        final ToggleButton togglebutton2 = findViewById(R.id.toggleButton2);
-
-
     }
 
     public void finishEvent(View v) {
@@ -83,9 +81,16 @@ public class NewEvent extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int eventID = Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1;
-                List<String> selected_dates;
                 selected_dates = getIntent().getStringArrayListExtra("SelectedDates");
                 int eventChoices = selected_dates.size();
+                if(selected_dates.size() == 0) {
+                    Toast.makeText(NewEvent.this, "You never selected any dates!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(selected_times.size() == 0) {
+                    Toast.makeText(NewEvent.this, "You never selected any times!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 int i;
                 for(i = 0; i < eventChoices; ++i) {
                     DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
@@ -100,28 +105,35 @@ public class NewEvent extends AppCompatActivity {
                 String title = evTitle.getText().toString();
                 DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/name");
                 myRef.setValue(title);
-                //EditText evNote = findViewById(R.id.editText2);
-                //String note = evNote.getText().toString();
-                //myRef = database.getReference("Events/" + eventID.toString() + "/note/");
-                //myRef.setValue(note);
                 String location = getIntent().getStringExtra("location");
                 myRef = database.getReference("Events/" + Integer.toString(eventID) + "/location");
                 myRef.setValue(location);
-                //boolean yesNoCheck = togglebutton1.isChecked();
-                //boolean limitCheck = togglebutton2.isChecked();
-                //String yesno = String.valueOf(yesNoCheck);
-                //String limit = String.valueOf(limitCheck);
-                //myRef = database.getReference("Events/" + eventID.toString() + "/yesno/");
-                //myRef.setValue(yesno);
-                //myRef = database.getReference("Events/" + eventID.toString() + "/limit/");
-                //myRef.setValue(limit);
-                finish();
+                boolean yesNoCheck = togglebutton1.isChecked();
+                boolean limitCheck = togglebutton2.isChecked();
+                String yesno = "Yes/No: " + String.valueOf(yesNoCheck);
+                String limit = "Limit: " + String.valueOf(limitCheck);
+                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
+                myRef.setValue(yesno);
+                i = i + 1;
+                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
+                myRef.setValue(limit);
+                Intent send_invites = new Intent(NewEvent.this, send_invite.class);
+                send_invites.putExtra("eventID", eventID);
+                startActivity(send_invites);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 //Failed to push event info to database
-                Toast.makeText(NewEvent.this, "Failed to create event", Toast.LENGTH_LONG).show();
+                Toast.makeText(NewEvent.this, "Failed to push data to Firebase", Toast.LENGTH_LONG).show();
             }
         });
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                selected_dates = data.getStringArrayListExtra("editTextValue");
+            }
+        }
     }
 }
