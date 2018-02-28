@@ -132,7 +132,7 @@ public class NewEvent extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                selected_dates = data.getStringArrayListExtra("editTextValue");
+                selected_dates = data.getStringArrayListExtra("SelectedDates");
             }
         }
     }
