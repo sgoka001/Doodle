@@ -14,6 +14,7 @@ public class GlobalVars extends Application {
     private static String userEmail = null;
     private static String userPw = null;
     private static String userID = null;
+    private  static String inviteID = null;
 
     private static String eventID = null;
 
@@ -31,6 +32,16 @@ public class GlobalVars extends Application {
         userEmail = email;
         userName = name;
         userID = id;
+    }
+
+    public void setEvent(String id)
+    {
+        eventID = id;
+    }
+
+    public  void setInvite(String id)
+    {
+        inviteID = id;
     }
 
     public static void setUserId (String id)
@@ -59,6 +70,8 @@ public class GlobalVars extends Application {
     public static void setEventID(String eventID) {
         GlobalVars.eventID = eventID;
     }
+
+    public static  String getInviteID(){return inviteID;}
 
     public static void logout(){
         userPw = null;

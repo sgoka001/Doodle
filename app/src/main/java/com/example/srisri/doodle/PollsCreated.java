@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -37,9 +39,12 @@ public class PollsCreated extends AppCompatActivity {
    String title;
    ArrayList<String> eventss = new ArrayList<String>();
    ArrayList<String> titles = new ArrayList<String>();
+   ArrayList<String> eventid = new ArrayList<String>();
    ListView mListView;
     ArrayAdapter<String> adapters;
     FirebaseDatabase database;
+    CreatedAdapter createAdapter;
+
 
     //private ListView mListView;
     @Override
@@ -51,8 +56,8 @@ public class PollsCreated extends AppCompatActivity {
         txt.setText("Hello");
        // adapters=new ArrayAdapter<String>(this,R.layout.create_help,eventss);
         //mListView.setAdapter(adapters);
-        //String inst = GlobalVars.getInstance().getUserEmail();
-        final String inst = "pgior001@ucr.edu";
+        String inst = GlobalVars.getInstance().getUserEmail();
+        //final String inst = "pgior001@ucr.edu";
         mListView = (ListView)findViewById(R.id.listlist);
         //final FirebaseUser user = authu.getCurrentUser();
         database = FirebaseDatabase.getInstance();
@@ -63,23 +68,27 @@ public class PollsCreated extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null ) {
-                    DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
-                    title=(ret.child("location").getValue().toString());//+ " \n" + ret.child("name").getValue().toString());
-                    String lala = ret.child("name").getValue().toString();
-                    GlobalVars.getInstance().setEventID(ret.getKey());
-                    eventss.add(title.toString());
-                    titles.add(lala.toString());
-                    adapters=new ArrayAdapter<String>(PollsCreated.this,R.layout.create_help,R.id.textView3,eventss);
-                    mListView.setAdapter(adapters);
-                    adapters.notifyDataSetChanged();
-                    adapters = new ArrayAdapter<String>(PollsCreated.this,R.layout.create_help, R.id.textView5,titles);
-                    mListView.setAdapter(adapters);
-                    adapters.notifyDataSetChanged();
+                    Iterator ret = dataSnapshot.getChildren().iterator();
+                    while(ret.hasNext()) {
+                        DataSnapshot rets = (DataSnapshot)ret.next();
+                        title = (rets.child("location").getValue().toString());//+ " \n" + ret.child("name").getValue().toString());
+                        String lala = rets.child("name").getValue().toString();
+                        String id = rets.getKey();
+                        GlobalVars.getInstance().setEventID(rets.getKey() + 1);
+                        eventss.add(title.toString());
+                        titles.add(lala.toString());
+                        eventid.add(id);
+                        createAdapter = new CreatedAdapter(PollsCreated.this, R.layout.create_help, eventss);
+                        mListView.setAdapter(createAdapter);
+                        createAdapter.notifyDataSetChanged();
+                    }
+                    //adapters = new ArrayAdapter<String>(PollsCreated.this,R.layout.create_help, R.id.textView5,titles);
+                    //mListView.setAdapter(adapters);
+                    //adapters.notifyDataSetChanged();
                     Log.v("title2",eventss.get(0));
-                    Log.v("title", title);
+                    Log.v("title", Integer.toString(eventid.size()));
                     //GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
                     //Log.v("key",ret.getKey().toString());
-                    Toast.makeText(PollsCreated.this, "Query Database", Toast.LENGTH_SHORT).show();
                     //Button button = (Button) findViewById(R.id.textView3);
                     //button.setText(title);
                                                 }
@@ -94,8 +103,20 @@ public class PollsCreated extends AppCompatActivity {
             //adapters.notifyDataSetChanged();
             mListView = (ListView) findViewById(R.id.listlist);
             //eventss.add(title);
-        adapters=new ArrayAdapter<String>(PollsCreated.this,R.layout.create_help,R.id.textView3,eventss);
-        mListView.setAdapter(adapters);
+        createAdapter = new CreatedAdapter(PollsCreated.this,R.layout.create_help,eventss);
+        //adapters=new ArrayAdapter<String>(PollsCreated.this,R.layout.create_help,R.id.textView3,eventss);
+        mListView.setAdapter(createAdapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                    GlobalVars.getInstance().setEvent(eventid.get(position));
+                    Intent myIntent = new Intent(view.getContext(), ViewEventInfo.class);
+                    startActivityForResult(myIntent, 0);
+
+
+            }
+        });
     }
 
     private void moreInfo(View view)
@@ -104,161 +125,32 @@ public class PollsCreated extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public class CreateAdapter extends BaseAdapter {
-        private Context mContext;
-        private LayoutInflater mInflater;
-        private ArrayList<String> mDataSource;
-
-        public CreateAdapter(Context context, ArrayList<String> events) {
-            mContext = context;
-            mDataSource = events;
-            mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        }
-        @Override
-        public Object getItem(int position) {
-            return mDataSource.get(position);
-        }
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-        @Override
-        public int getCount() {
-            return mDataSource.size();
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // Get view for row item
-            View rowView = mInflater.inflate(R.layout.create_help, parent, false);
-            Toast.makeText(PollsCreated.this, "View",Toast.LENGTH_SHORT).show();
-            TextView textView = (TextView)rowView.findViewById(R.id.textView3);
-            TextView loc = (TextView)rowView.findViewById(R.id.textView5);
-            textView.setText(mDataSource.get(position));
-            loc.setText("Home");
-
-            return rowView;
-        }
-    }
-
-
-
-
-    public void GetPollInfo()
-    {
-        final String inst = "pgior001@ucr.edu";
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("Events");
-        Query query = ref.orderByChild("owner").equalTo(inst);
-        Log.v("Query", query.toString());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null ) {
-                    DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
-                    title=(ret.child("location").getValue().toString()); //+ " \n" + ret.child("name").getValue().toString());
-                    GlobalVars.getInstance().setEventID(ret.getKey());
-
-                        eventss.add(title.toString());
-                        //adapters.notifyDataSetChanged();
-                    Log.v("title2",eventss.get(0));
-                    Log.v("title", title);
-                    //GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
-                    //Log.v("key",ret.getKey().toString());
-                    Toast.makeText(PollsCreated.this, "Query Database", Toast.LENGTH_SHORT).show();
-                    //Button button = (Button) findViewById(R.id.textView3);
-                    //button.setText(title);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-   /* public class CreatedAdapter extends BaseAdapter
-    {
-        private Context mContext;
-        private LayoutInflater mInflater;
-        private ArrayList<String> mDataSource;
-
-        public CreatedAdapter(Context context, ArrayList<String> events) {
-            mContext = context;
-            mDataSource = events;
-            mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        }
-        @Override
-        public Object getItem(int position) {
-            return mDataSource.get(position);
-        }
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-        @Override
-        public int getCount() {
-            return mDataSource.size();
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // Get view for row item
-            View rowView = mInflater.inflate(R.layout.create_help, parent, false);
-
-            TextView textView = (TextView)rowView.findViewById(R.id.textView3);
-
-            textView.setText(title);
-
-            return rowView;
-        }
-    }
-
-   /* private class CreatedAdapter extends ArrayAdapter<String>
-    {
+    private class CreatedAdapter extends ArrayAdapter<String> {
         private int layout;
+        private Context mContext;
+        private LayoutInflater mInflater;
+        private List<String> mDataSource;
         public CreatedAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
             super(context, resource, objects);
             layout = resource;
+            mDataSource = objects;
         }
 
         @NonNull
         @Override
-        public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            CreatedAdapter mainHolder;
-            if(convertView == null){
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(layout, parent, false);
-                final CreatedAdapter holder = new CreatedAdapter();
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Get view for row item
+            mInflater = LayoutInflater.from(getContext());
+            View rowView = mInflater.inflate(R.layout.create_help, parent, false);
+            TextView textView = (TextView)rowView.findViewById(R.id.textView3);
+            TextView loc = (TextView)rowView.findViewById(R.id.textView5);
+            textView.setText(mDataSource.get(position));
+            loc.setText(titles.get(position));
 
-                holder.name = (TextView) convertView.findViewById(R.id.event_name_invite);
-                holder.name.setText(pendingInvites.get(position));
-                holder.Accept = (Button) convertView.findViewById(R.id.accept_button_invite);
-                holder.Accept.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //add on click code
-                        Log.v("click", "accept:" + position);
-                        Log.v("click", holder.name.getText().toString());
-                    }
-                });
-                holder.reject = (Button) convertView.findViewById(R.id.decline_button_invite);
-                holder.reject.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //add on click code
-                        Log.v("click", "decline:" + position);
-                    }
-                });
-                convertView.setTag(holder);
-            } else {
-                mainHolder = (Dashboard.AcceptEventViewHolder) convertView.getTag();
-                mainHolder.name.setText(getItem(position));
-            }
-            return convertView;
+            return rowView;
         }
+    }
 
-    }*/
 }
 
 

@@ -43,7 +43,8 @@
         <activity android:name=".AddOptionsCalendarActivity" />
         <activity android:name=".Polling" />
         <activity android:name=".PollsCreated" />
-        <activity android:name=".ViewEventInfo"></activity>
+        <activity android:name=".ViewEventInfo" />
+        <activity android:name=".PollsParticipated"></activity>
     </application>
 
 </manifest>

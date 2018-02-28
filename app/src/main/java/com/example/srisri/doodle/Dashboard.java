@@ -225,7 +225,6 @@ public class Dashboard extends AppCompatActivity {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Dashboard.this, "Account Deleted", Toast.LENGTH_LONG).show();
                 //delete account in database
                 deleteAcc();
                 //set the data of the username, email, pass to NULL
@@ -254,17 +253,18 @@ public class Dashboard extends AppCompatActivity {
         startActivity(loginscreen);
     }
     public void openEvent(View view) {
-        Toast.makeText(Dashboard.this,"Open Event", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, NewEvent.class);
         startActivity(intent);
     }
 
     public void openEvent2(View view) {
-        Toast.makeText(Dashboard.this,"Polls Created", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, PollsCreated.class);
         startActivity(intent);
     }
-
+    public void openEvent3(View view) {
+        Intent intent = new Intent(this, PollsParticipated.class);
+        startActivity(intent);
+    }
     private class AcceptEventAdapter extends ArrayAdapter<String> {
         private int layout;
         public AcceptEventAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
