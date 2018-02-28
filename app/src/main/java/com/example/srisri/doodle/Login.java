@@ -273,38 +273,43 @@ public class Login extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
                 final FirebaseUser user = authu.getCurrentUser();
-                final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference("Users");
-                Query query = ref.orderByChild("email").equalTo(user.getEmail());
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue() != null ) {
-                            DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
-                            GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
-                            Log.v("key",ret.getKey().toString());
-                            Toast.makeText(Login.this, "set globe vars2", Toast.LENGTH_SHORT).show();
-                            Intent dashboard = new Intent(Login.this, Dashboard.class);
-                            startActivity(dashboard);
+                if (user != null) {
+                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference ref = database.getReference("Users");
+                    Query query = ref.orderByChild("email").equalTo(user.getEmail());
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
+                                GlobalVars.getInstance().setUser(user.getDisplayName(), user.getEmail(), ret.getKey().toString());
+                                Log.v("key", ret.getKey().toString());
+                                Toast.makeText(Login.this, "set globe vars2", Toast.LENGTH_SHORT).show();
+                                Intent dashboard = new Intent(Login.this, Dashboard.class);
+                                startActivity(dashboard);
+                            }
+
                         }
 
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });}
                 /*GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),user.get);
                 Toast.makeText(Login.this, "set globe vars2", Toast.LENGTH_SHORT).show();
                 Intent dashboard = new Intent(Login.this, Dashboard.class);
                 startActivity(dashboard);*/
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
-                //Log.w(TAG, "Google sign in failed", e);
-                // ...
+                } catch(ApiException e){
+                    // Google Sign In failed, update UI appropriately
+                    Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
+                    //Log.w(TAG, "Google sign in failed", e);
+                    // ...
+                }
+
             }
-        }
+
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {

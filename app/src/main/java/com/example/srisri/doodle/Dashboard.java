@@ -100,6 +100,7 @@ public class Dashboard extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
        mGoogleSignInClient.signOut();
+
              //   .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                //     @Override
                  //   public void onComplete(@NonNull Task<Void> task) {
@@ -247,6 +248,19 @@ public class Dashboard extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         mGoogleSignInClient.revokeAccess();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("Del", "User account deleted.");
+                        }
+                    }
+                });
+
         Intent loginscreen = new Intent(this, Login.class);
         loginscreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         GlobalVars.logout();
