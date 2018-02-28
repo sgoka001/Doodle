@@ -10,27 +10,41 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class NewEvent extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final List<String> selected_times = new ArrayList<String>();
+    List<String> selected_dates;
+    final ToggleButton togglebutton1 = findViewById(R.id.toggleButton);
+    final ToggleButton togglebutton2 = findViewById(R.id.toggleButton2);
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
-        // Setting event buttons and text boxes
+
+        TextView displayName = findViewById(R.id.LocName);
+        displayName.setText(Location.address);
 
         Button evAddOptions = findViewById(R.id.button2);
         evAddOptions.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 Intent intent = new Intent(NewEvent.this, AddOptionsCalendarActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         final Spinner dropdown = findViewById(R.id.spinner);
@@ -41,15 +55,14 @@ public class NewEvent extends AppCompatActivity {
 
         final Spinner dropdown2 = findViewById(R.id.spinner2);
         String[] items2 = new String[]{"00", "15", "30", "45"};
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items2);
         dropdown2.setAdapter(adapter2);
 
         final Spinner dropdown3 = findViewById(R.id.spinner3);
         String[] items3 = new String[]{"AM", "PM"};
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items3);
         dropdown3.setAdapter(adapter3);
 
-        final List<String> selected_times = new ArrayList<String>();
         Button evAddOptionDT = findViewById(R.id.button5);
 
         evAddOptionDT.setOnClickListener(new View.OnClickListener() {
@@ -59,49 +72,68 @@ public class NewEvent extends AppCompatActivity {
                 selected_times.add(spinnertext);
             }
         });
+    }
 
-        final ToggleButton togglebutton1 = findViewById(R.id.toggleButton);
-        final ToggleButton togglebutton2 = findViewById(R.id.toggleButton2);
-
-        Button evFinish = findViewById(R.id.button3);
-        evFinish.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                List<String> selected_dates;
+    public void finishEvent(View v) {
+        DatabaseReference ref = database.getReference("Events");
+        Query query = ref.orderByKey().limitToLast(1);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int eventID = Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1;
                 selected_dates = getIntent().getStringArrayListExtra("SelectedDates");
                 int eventChoices = selected_dates.size();
+                if(selected_dates.size() == 0) {
+                    Toast.makeText(NewEvent.this, "You never selected any dates!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(selected_times.size() == 0) {
+                    Toast.makeText(NewEvent.this, "You never selected any times!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 int i;
                 for(i = 0; i < eventChoices; ++i) {
-                    //DatabaseReference myRef = database.getReference("Events/" + eventID.toString() + "/choices/" + i);
-                    //myRef.setValue(selected_dates.get(i));
+                    DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
+                    myRef.setValue(selected_dates.get(i));
                 }
                 for(int j = 0; j < selected_times.size(); ++j) {
-                    //DatabaseReference myRef = database.getReference("Events/" + eventID.toString() + "/choices/" + i);
-                    //myRef.setValue(selected_times.get(j));
+                    DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
+                    myRef.setValue(selected_times.get(j));
                     i = i + 1;
                 }
                 EditText evTitle = findViewById(R.id.editText);
                 String title = evTitle.getText().toString();
-                //DatabaseReference myRef = database.getReference("Events/" + eventID.toString() + "/title/");
-                //myRef.setValue(title);
-                EditText evNote = findViewById(R.id.editText2);
-                String note = evNote.getText().toString();
-                //myRef = database.getReference("Events/" + eventID.toString() + "/note/");
-                //myRef.setValue(note);
+                DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/name");
+                myRef.setValue(title);
+                String location = getIntent().getStringExtra("location");
+                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/location");
+                myRef.setValue(location);
                 boolean yesNoCheck = togglebutton1.isChecked();
                 boolean limitCheck = togglebutton2.isChecked();
-                String yesno = String.valueOf(yesNoCheck);
-                String limit = String.valueOf(limitCheck);
-                //myRef = database.getReference("Events/" + eventID.toString() + "/yesno/");
-                //myRef.setValue(yesno);
-                //myRef = database.getReference("Events/" + eventID.toString() + "/limit/");
-                //myRef.setValue(limit);
+                String yesno = "Yes/No: " + String.valueOf(yesNoCheck);
+                String limit = "Limit: " + String.valueOf(limitCheck);
+                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
+                myRef.setValue(yesno);
+                i = i + 1;
+                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
+                myRef.setValue(limit);
+                Intent send_invites = new Intent(NewEvent.this, send_invite.class);
+                send_invites.putExtra("eventID", eventID);
+                startActivity(send_invites);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //Failed to push event info to database
+                Toast.makeText(NewEvent.this, "Failed to push data to Firebase", Toast.LENGTH_LONG).show();
             }
         });
-
-
     }
-    public void openMap(View view) {
-        Intent intent = new Intent(this, Location.class);
-        startActivity(intent);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                selected_dates = data.getStringArrayListExtra("editTextValue");
+            }
+        }
     }
 }

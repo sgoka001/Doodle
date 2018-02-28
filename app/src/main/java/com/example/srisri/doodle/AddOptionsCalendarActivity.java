@@ -54,8 +54,9 @@ public class AddOptionsCalendarActivity extends AppCompatActivity {
                     dates.add(calendar_view.getSelectedDates().get(i).toString());
 
                 }
-                Intent selecteddates = new Intent(AddOptionsCalendarActivity.this, NewEvent.class);
+                Intent selecteddates = new Intent();
                 selecteddates.putExtra("SelectedDates", dates);
+                setResult(RESULT_OK, selecteddates);
                 finish();
             }
         });

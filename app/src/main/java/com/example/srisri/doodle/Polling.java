@@ -37,8 +37,8 @@ public class Polling extends AppCompatActivity {
     ArrayList<String> inviteKeys;
     ArrayList<Integer> choiceId;        //Will start at 100
     Integer submitId = 85;
-    String eventid;
-    String inviteid;
+    Integer eventid;
+    Integer inviteid;
     FirebaseDatabase database;
 
     boolean temp;
@@ -53,7 +53,8 @@ public class Polling extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         //GetInviteId from dashboard
-        inviteid = GlobalVars.getInstance().getInviteID();
+        inviteid = 7;
+        //inviteid = GlobalVars.getEventID();       // set inviteid to a string and remove toString from every time it is called
         //Check if accepted
         DatabaseReference myRefAccept = database.getReference("invites/"+ inviteid.toString() +"/accepted");
         myRefAccept.addValueEventListener(new ValueEventListener() {
@@ -102,7 +103,7 @@ public class Polling extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                eventid = dataSnapshot.getValue(String.class);
+                eventid = dataSnapshot.getValue(Integer.class);
 
                 //Event Name
                 DatabaseReference myRef = database.getReference("Events/"+ eventid.toString() +"/name");

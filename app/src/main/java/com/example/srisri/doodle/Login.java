@@ -114,7 +114,7 @@ public class Login extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Toast.makeText(Login.this, "OnStart", Toast.LENGTH_SHORT).show();
-            // Sign in success, update UI with the signed-in user's information
+        // Sign in success, update UI with the signed-in user's information
             /*Log.d("TAG", "signInWithCredential:success");
             final FirebaseUser user = authu.getCurrentUser();
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -170,7 +170,7 @@ public class Login extends AppCompatActivity {
 
 
 
-            //updateUI(user);
+        //updateUI(user);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         //Log.v("is null",String.valueOf(account.getEmail()==null));

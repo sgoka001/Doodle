@@ -14,7 +14,7 @@ public class Location extends AppCompatActivity {
 
     int PLACE_PICKER_REQUEST = 1;
     public static CharSequence name;
-    public CharSequence address;
+    public static CharSequence address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +42,16 @@ public class Location extends AppCompatActivity {
             name = place.getName();
             address = place.getAddress();
 
-            //notification saying restaurant name
-            String toastMsg = String.format("Place: %s", name);
+            String location = name + ": " + address;
+            Intent event_location = new Intent(Location.this, NewEvent.class);
+            event_location.putExtra("location", location);
+            startActivity(event_location);
+
+            /*
+            //notification saying restaurant address
+            String toastMsg = String.format("Place: %s", address);
             Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+            */
         }
     }
 }
