@@ -37,8 +37,8 @@ public class Polling extends AppCompatActivity {
     ArrayList<String> inviteKeys;
     ArrayList<Integer> choiceId;        //Will start at 100
     Integer submitId = 85;
-    Integer eventid;
-    Integer inviteid;
+    String eventid;
+    String inviteid;
     FirebaseDatabase database;
 
     boolean temp;
@@ -53,10 +53,10 @@ public class Polling extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         //GetInviteId from dashboard
-        inviteid = 7;
-        //inviteid = GlobalVars.getInviteID();       //TODO: set inviteid to a string and remove toString from every time it is called
+//        inviteid = 2;
+        inviteid = GlobalVars.getInviteID();       //TODO: set inviteid to a string and remove toString from every time it is called
         //Check if accepted
-        DatabaseReference myRefAccept = database.getReference("invites/"+ inviteid.toString() +"/accepted");
+        DatabaseReference myRefAccept = database.getReference("invites/"+ inviteid +"/accepted");
         myRefAccept.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -76,7 +76,7 @@ public class Polling extends AppCompatActivity {
         });
 
         //Get inviteKeys
-        DatabaseReference myRefkeys = database.getReference("invites/"+ inviteid.toString() );
+        DatabaseReference myRefkeys = database.getReference("invites/"+ inviteid );
         myRefkeys.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -97,16 +97,16 @@ public class Polling extends AppCompatActivity {
         });
 
         //Get EventId
-        DatabaseReference myRefEid = database.getReference("invites/"+ inviteid.toString() +"/eventid");
+        DatabaseReference myRefEid = database.getReference("invites/"+ inviteid +"/eventid");
         myRefEid.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                eventid = dataSnapshot.getValue(Integer.class);
+                eventid = dataSnapshot.getValue(String.class);
 
                 //Event Name
-                DatabaseReference myRef = database.getReference("Events/"+ eventid.toString() +"/name");
+                DatabaseReference myRef = database.getReference("Events/"+ eventid +"/name");
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -125,7 +125,7 @@ public class Polling extends AppCompatActivity {
                 });
 
                 //Location Button
-                DatabaseReference myRefLoc = database.getReference("Events/"+ eventid.toString() +"/location");
+                DatabaseReference myRefLoc = database.getReference("Events/"+ eventid +"/location");
                 myRefLoc.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,7 +146,7 @@ public class Polling extends AppCompatActivity {
                 //Dynamically Create checkbox polling
                 //Dynamically Create Button to Submit
                 svPoll = findViewById(R.id.pollingScrollView);
-                DatabaseReference myRefChoices = database.getReference("Events/"+ eventid.toString() ).child("choices");
+                DatabaseReference myRefChoices = database.getReference("Events/"+ eventid ).child("choices");
                 myRefChoices.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -187,7 +187,7 @@ public class Polling extends AppCompatActivity {
                         boxChoice = new CheckBox(Polling.this);
                         boxChoice.setText("Cannot Attend");
                         if(inviteKeys.contains("noAttend")) {
-                            DatabaseReference myRefnoAttend = database.getReference("invites/" + inviteid.toString() + "/noAttend");
+                            DatabaseReference myRefnoAttend = database.getReference("invites/" + inviteid + "/noAttend");
                             myRefnoAttend.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -238,7 +238,7 @@ public class Polling extends AppCompatActivity {
                                 //check if invite keys contains the choice
                                 if (inviteKeys.contains(choiceList.get(i))) {
                                     //pull database reference of choice and get the id of the correct button
-                                    DatabaseReference memRef = database.getReference("invites/" + inviteid.toString() + "/" + choiceList.get(i));
+                                    DatabaseReference memRef = database.getReference("invites/" + inviteid + "/" + choiceList.get(i));
                                     final Integer true_id = getResources().getIdentifier(choiceId.get(i).toString(), "id",getPackageName());
 
                                     //pull data from database and boxchoice to true if it was true in database
@@ -272,7 +272,7 @@ public class Polling extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(Polling.this,eventid.toString() ,Toast.LENGTH_LONG).show();
+                Toast.makeText(Polling.this,eventid ,Toast.LENGTH_LONG).show();
 
             }
 
@@ -329,7 +329,7 @@ public class Polling extends AppCompatActivity {
             DatabaseReference myRef;
             //Going through all choices in choice list
             if(i < choiceList.size()){
-                myRef = database.getReference("invites/"+ inviteid.toString() + "/"+choiceList.get(i));
+                myRef = database.getReference("invites/"+ inviteid + "/"+choiceList.get(i));
 
                 Integer true_id = getResources().getIdentifier(choiceId.get(i).toString(), "id",getPackageName());
                 CheckBox box = findViewById(true_id);
@@ -341,7 +341,7 @@ public class Polling extends AppCompatActivity {
             }
             //this should be accessed only once for last check box (cannot attend)
             else{
-                myRef = database.getReference("invites/"+ inviteid.toString() + "/noAttend");
+                myRef = database.getReference("invites/"+ inviteid + "/noAttend");
 
                 Integer true_id = getResources().getIdentifier(choiceId.get(i).toString(), "id",getPackageName());
                 CheckBox box = findViewById(true_id);
@@ -378,9 +378,9 @@ public class Polling extends AppCompatActivity {
         mAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference myRef = database.getReference("invites/"+ inviteid.toString() + "/accepted");
+                DatabaseReference myRef = database.getReference("invites/"+ inviteid + "/accepted");
                 myRef.setValue(true);
-                myRef = database.getReference("invites/"+ inviteid.toString() + "/declined");
+                myRef = database.getReference("invites/"+ inviteid + "/declined");
                 myRef.setValue(false);
                 dialog.dismiss();
             }
@@ -389,9 +389,9 @@ public class Polling extends AppCompatActivity {
         mDecline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference myRef = database.getReference("invites/"+ inviteid.toString() + "/accepted");
+                DatabaseReference myRef = database.getReference("invites/"+ inviteid + "/accepted");
                 myRef.setValue(false);
-                myRef = database.getReference("invites/"+ inviteid.toString() + "/declined");
+                myRef = database.getReference("invites/"+ inviteid + "/declined");
                 myRef.setValue(true);
                 backToDash();
             }

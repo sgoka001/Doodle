@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 public class AddOptionsCalendarActivity extends AppCompatActivity {
     private CalendarPickerView calendar;
+
+    ArrayList<String> dates = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +46,7 @@ public class AddOptionsCalendarActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "UnSelected Date is : " + date.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        final ArrayList<String> dates = new ArrayList<>();
+        //final ArrayList<String> dates = new ArrayList<>();
         Button btn_show_dates = (Button) findViewById(R.id.btn_show_dates);
         btn_show_dates.setOnClickListener(new View.OnClickListener() {
             @Override
