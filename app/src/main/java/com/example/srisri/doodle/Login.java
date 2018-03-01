@@ -303,7 +303,7 @@ public class Login extends AppCompatActivity {
                 startActivity(dashboard);*/
                 } catch(ApiException e){
                     // Google Sign In failed, update UI appropriately
-                    Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Error2", Toast.LENGTH_SHORT).show();
                     //Log.w(TAG, "Google sign in failed", e);
                     // ...
                 }
@@ -400,7 +400,7 @@ public class Login extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Error1", Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
 
