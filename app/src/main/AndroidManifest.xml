@@ -26,6 +26,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD02zfklTnI-fiX5VTG6MnAHRpk27Evp4I" />
+        <meta-data
+            android:name="firebase_crash_collection_enabled"
+            android:value="false" ></meta-data>
 
         <activity android:name=".Login">
             <intent-filter>

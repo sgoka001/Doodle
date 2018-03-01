@@ -144,8 +144,8 @@ public class PollsCreated extends AppCompatActivity {
             View rowView = mInflater.inflate(R.layout.create_help, parent, false);
             TextView textView = (TextView)rowView.findViewById(R.id.textView3);
             TextView loc = (TextView)rowView.findViewById(R.id.textView5);
-            textView.setText(mDataSource.get(position));
-            loc.setText(titles.get(position));
+            textView.setText(titles.get(position));
+            loc.setText(mDataSource.get(position));
 
             return rowView;
         }

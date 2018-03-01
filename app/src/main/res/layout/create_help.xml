@@ -11,6 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:typeface="sans"
+        android:textStyle="bold"
         tools:layout_editor_absoluteX="151dp"
         tools:layout_editor_absoluteY="42dp" />
 
