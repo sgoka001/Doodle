@@ -68,11 +68,14 @@ public class PollsParticipated extends AppCompatActivity {
                     while(ret.hasNext()) {
                         DataSnapshot rets = (DataSnapshot)ret.next();
                         String id = rets.getKey();
+                        String truth = rets.child("declined").getValue().toString();
                         Log.v("id", id);
                         String Eid = rets.child("eventId").getValue().toString();
                         Log.v("eventid", Eid);
                         //GlobalVars.getInstance().setEventID(ret.getKey()+1);
-                        getEventInfo(Eid, id);
+                        if(truth.equals("false")) {
+                            getEventInfo(Eid, id);
+                        }
                     }
 
                     mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
