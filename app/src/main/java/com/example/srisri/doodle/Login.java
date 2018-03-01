@@ -88,8 +88,8 @@ public class Login extends AppCompatActivity{
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot != null) {
-                        //Iterator childeren = dataSnapshot.getChildren().iterator().next().getChildren().iterator();
-                        Iterator childeren = dataSnapshot.getChildren().iterator();
+                        Iterator childeren = dataSnapshot.getChildren().iterator().next().getChildren().iterator();
+                        //Iterator childeren = dataSnapshot.getChildren().iterator();
                         while (childeren.hasNext()) {
                             DataSnapshot child = (DataSnapshot) childeren.next();
                             if (child.getKey().equals("password")) {
