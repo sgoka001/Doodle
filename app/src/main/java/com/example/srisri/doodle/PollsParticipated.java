@@ -50,6 +50,7 @@ public class PollsParticipated extends AppCompatActivity {
         // adapters=new ArrayAdapter<String>(this,R.layout.create_help,eventss);
         //mListView.setAdapter(adapters);
         String inst = GlobalVars.getInstance().getUserEmail();
+
         //final String inst = "pgior001@ucr.edu";
         mListView = (ListView)findViewById(R.id.listlist2);
         //final FirebaseUser user = authu.getCurrentUser();
@@ -67,6 +68,7 @@ public class PollsParticipated extends AppCompatActivity {
                     while(ret.hasNext()) {
                         DataSnapshot rets = (DataSnapshot)ret.next();
                         String id = rets.getKey();
+                        Log.v("id", id);
                         String Eid = rets.child("eventId").getValue().toString();
                         Log.v("eventid", Eid);
                         //GlobalVars.getInstance().setEventID(ret.getKey()+1);
