@@ -28,10 +28,12 @@ import java.util.List;
 public class NewEvent extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    final List<String> selected_times = new ArrayList<String>();
+    List<String> selected_times = new ArrayList<String>();
     List<String> selected_dates;
-    final ToggleButton togglebutton1 = findViewById(R.id.toggleButton);
-    final ToggleButton togglebutton2 = findViewById(R.id.toggleButton2);
+
+    ToggleButton togglebutton1;
+    ToggleButton togglebutton2;
+
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -73,6 +75,8 @@ public class NewEvent extends AppCompatActivity {
                 Toast.makeText(NewEvent.this, "Added: " + spinnertext + "to your event!", Toast.LENGTH_LONG).show();
             }
         });
+        togglebutton1 = findViewById(R.id.toggleButton);
+        togglebutton2 = findViewById(R.id.toggleButton2);
     }
 
     public void finishEvent(View v) {
@@ -82,7 +86,7 @@ public class NewEvent extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int eventID = Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1;
-                selected_dates = getIntent().getStringArrayListExtra("SelectedDates");
+                //selected_dates = getIntent().getStringArrayListExtra("SelectedDates");
                 int eventChoices = selected_dates.size();
                 if(selected_dates.size() == 0) {
                     Toast.makeText(NewEvent.this, "You never selected any dates!", Toast.LENGTH_LONG).show();
