@@ -113,7 +113,7 @@ public class Polling extends AppCompatActivity {
                         // This method is called once with the initial value and again
                         // whenever data at this location is updated.
                         String value = dataSnapshot.getValue(String.class);
-//                Toast.makeText(Polling.this,"Success" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(Polling.this, "ERROR CHECKING RN" ,Toast.LENGTH_LONG).show();
                         newDesc.setText(value);
                     }
 
@@ -272,8 +272,7 @@ public class Polling extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(Polling.this,eventid ,Toast.LENGTH_LONG).show();
-
+                Toast.makeText(Polling.this, eventid,Toast.LENGTH_LONG).show();
             }
 
             @Override
