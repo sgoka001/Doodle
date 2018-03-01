@@ -70,6 +70,7 @@ public class NewEvent extends AppCompatActivity {
                 String spinnertext = dropdown.getSelectedItem().toString() +
                         dropdown2.getSelectedItem().toString() + dropdown3.getSelectedItem().toString();
                 selected_times.add(spinnertext);
+                Toast.makeText(NewEvent.this, "Added: " + spinnertext + "to your event!", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -103,6 +104,10 @@ public class NewEvent extends AppCompatActivity {
                 }
                 EditText evTitle = findViewById(R.id.editText);
                 String title = evTitle.getText().toString();
+                if (evTitle.length() == 0) {
+                    Toast.makeText(NewEvent.this, "You need to input a title!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/name");
                 myRef.setValue(title);
                 String location = getIntent().getStringExtra("location");
@@ -132,7 +137,7 @@ public class NewEvent extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
-                selected_dates = data.getStringArrayListExtra("editTextValue");
+                selected_dates = data.getStringArrayListExtra("SelectedDates");
             }
         }
     }
