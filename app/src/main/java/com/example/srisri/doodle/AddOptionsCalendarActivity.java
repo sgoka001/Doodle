@@ -32,21 +32,6 @@ public class AddOptionsCalendarActivity extends AppCompatActivity {
         //add one year to calendar from todays date
         calendar_view.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);
-        calendar_view.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Date date) {
-
-                Toast.makeText(getApplicationContext(), "Selected Date is : " + date.toString(), Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onDateUnselected(Date date) {
-
-                Toast.makeText(getApplicationContext(), "UnSelected Date is : " + date.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        //final ArrayList<String> dates = new ArrayList<>();
         Button btn_show_dates = (Button) findViewById(R.id.btn_show_dates);
         btn_show_dates.setOnClickListener(new View.OnClickListener() {
             @Override
