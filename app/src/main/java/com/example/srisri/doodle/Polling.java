@@ -97,13 +97,13 @@ public class Polling extends AppCompatActivity {
         });
 
         //Get EventId
-        DatabaseReference myRefEid = database.getReference("invites/"+ inviteid +"/eventid");
+        DatabaseReference myRefEid = database.getReference("invites/"+ inviteid +"/eventId");
         myRefEid.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                eventid = dataSnapshot.getValue(String.class);
+                eventid = dataSnapshot.getValue().toString();
 
                 //Event Name
                 DatabaseReference myRef = database.getReference("Events/"+ eventid +"/name");
@@ -113,7 +113,7 @@ public class Polling extends AppCompatActivity {
                         // This method is called once with the initial value and again
                         // whenever data at this location is updated.
                         String value = dataSnapshot.getValue(String.class);
-                        Toast.makeText(Polling.this, "ERROR CHECKING RN" ,Toast.LENGTH_LONG).show();
+//                        Toast.makeText(Polling.this, "ERROR CHECKING RN" ,Toast.LENGTH_LONG).show();
                         newDesc.setText(value);
                     }
 
