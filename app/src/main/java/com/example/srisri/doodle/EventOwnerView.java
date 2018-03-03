@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
 
 /**
  * Created by Bang Se Hoon on 2/26/2018.
@@ -35,7 +37,7 @@ public class EventOwnerView extends AppCompatActivity{
     CheckBox boxChoice;
     TextView newDesc;
     Button btnLocation;
-    ScrollView svPoll;
+    ScrollView svPollRes;
     LinearLayout boxContiner;
     HashMap<String, Integer> choiceList;
     HashMap<String, Boolean> tempInviteList;
@@ -44,17 +46,18 @@ public class EventOwnerView extends AppCompatActivity{
     String eventid;
     String inviteid;
     FirebaseDatabase database;
-
+    Semaphore MakeLinear;
     boolean addToChoiceList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_polling);
+        setContentView(R.layout.activity_event_owner);
 
         newDesc = findViewById(R.id.text_pollingDesc);
         btnLocation = findViewById(R.id.btn_location);
 
         database = FirebaseDatabase.getInstance();
+        MakeLinear = new Semaphore(1);
         /*
             TODO:
                 1) Pull all event invite data from database
@@ -78,23 +81,31 @@ public class EventOwnerView extends AppCompatActivity{
 
 
         //Get EventID from dashboard
-//        eventid= GlobalVars.getEventID();       //TODO: set inviteid to a string and remove toString from every time it is called
-        eventid = "2";
+        eventid= GlobalVars.getEventID();       //TODO: set inviteid to a string and remove toString from every time it is called
+        eventid="2";
         //will hold name and count of choices
         choiceList = new HashMap<>();
         //Pull all choices from event
         //save all choices into choiceList
+
+
         DatabaseReference myRefChoices = database.getReference("Events/"+ eventid ).child("choices");
         myRefChoices.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //fill up the hashmap
+                try {
+                    MakeLinear.acquire();
+                } catch(InterruptedException e){
+                    Log.v("error", e.toString());
+                }
+
                 final String checkKey = dataSnapshot.getKey();
                 Toast.makeText(EventOwnerView.this,checkKey, Toast.LENGTH_LONG ).show();
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     choiceList.put(dsp.getValue(String.class),0);   //add values
-                     }
-                Toast.makeText(EventOwnerView.this,"size: " + choiceList.size(), Toast.LENGTH_LONG ).show();
+                }
+                MakeLinear.release();
 
                 //Go through all invites and see if their_eventid == eventID
                 DatabaseReference inviteRef = database.getReference().child("invites");
@@ -102,6 +113,13 @@ public class EventOwnerView extends AppCompatActivity{
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         tempInviteList = new HashMap<>();
+
+                        //wait for top to release the semaphore
+                        try {
+                            MakeLinear.acquire();
+                        } catch(InterruptedException e){
+                            Log.v("error", e.toString());
+                        }
 
                         for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                             addToChoiceList = false;
@@ -121,7 +139,7 @@ public class EventOwnerView extends AppCompatActivity{
                                     else {
 //                                Toast.makeText(EventOwnerView.this,key, Toast.LENGTH_LONG ).show();
 //                                Toast.makeText(EventOwnerView.this,String.valueOf(data.getValue()), Toast.LENGTH_LONG ).show();
-                                        if (data.getValue(boolean.class)) {
+                                        if (data.getValue(boolean.class) != null && data.getValue(boolean.class)) {
                                             tempInviteList.put(key, true);
                                         }
                                     }
@@ -144,9 +162,13 @@ public class EventOwnerView extends AppCompatActivity{
                         }
 
                         Toast.makeText(EventOwnerView.this,"sizes Final: " + choiceList.size(), Toast.LENGTH_LONG ).show();
+
+
                         for(String keys : choiceList.keySet()){
                             Toast.makeText(EventOwnerView.this,keys + ":" + choiceList.get(keys).toString(), Toast.LENGTH_LONG ).show();
                         }
+
+                        MakeLinear.release();
                     }
 
                     @Override
@@ -154,6 +176,7 @@ public class EventOwnerView extends AppCompatActivity{
 
                     }
                 });
+
             }
 
             @Override
@@ -161,8 +184,6 @@ public class EventOwnerView extends AppCompatActivity{
                 Toast.makeText(EventOwnerView.this,"FAILED", Toast.LENGTH_LONG ).show();
             }
         });
-
-
 
     }
 }

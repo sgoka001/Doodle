@@ -29,7 +29,7 @@ public class NewEvent extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     List<String> selected_times = new ArrayList<String>();
-    List<String> selected_dates;
+    List<String> selected_dates = new ArrayList<>();
 
     ToggleButton togglebutton1;
     ToggleButton togglebutton2;
@@ -86,8 +86,6 @@ public class NewEvent extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int eventID = Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1;
-                //selected_dates = getIntent().getStringArrayListExtra("SelectedDates");
-                int eventChoices = selected_dates.size();
                 if(selected_dates.size() == 0) {
                     Toast.makeText(NewEvent.this, "You never selected any dates!", Toast.LENGTH_LONG).show();
                     return;
@@ -97,7 +95,7 @@ public class NewEvent extends AppCompatActivity {
                     return;
                 }
                 int i;
-                for(i = 0; i < eventChoices; ++i) {
+                for(i = 0; i < selected_dates.size(); ++i) {
                     DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
                     myRef.setValue(selected_dates.get(i));
                 }
