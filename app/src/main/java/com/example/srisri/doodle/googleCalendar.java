@@ -1,5 +1,7 @@
 package com.example.srisri.doodle;
 
+import android.util.Log;
+
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
@@ -31,7 +33,7 @@ public class googleCalendar {
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
                 transport, jsonFactory, mCredential)
-                .setApplicationName("Doodle")
+                .setApplicationName("com.example.srisri.doodle")
                 .build();
 
 
@@ -40,16 +42,16 @@ public class googleCalendar {
                 .setLocation("Dhaka")
                 .setDescription("New Event 1");
 
-        DateTime startDateTime = new DateTime("2016-04-17T18:10:00+06:00");
+        DateTime startDateTime = new DateTime("2018-04-17T18:10:00+06:00");
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDateTime)
-                .setTimeZone("Asia/Dhaka");
+                .setTimeZone("Pacific");
         event.setStart(start);
 
-        DateTime endDateTime = new DateTime("2016-04-17T18:40:00+06:00");
+        DateTime endDateTime = new DateTime("2018-04-17T18:40:00+06:00");
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDateTime)
-                .setTimeZone("Asia/Dhaka");
+                .setTimeZone("Pacific");
         event.setEnd(end);
 
         String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
@@ -73,10 +75,12 @@ public class googleCalendar {
         String calendarId = "primary";
         try {
             event = service.events().insert(calendarId, event).execute();
+            Log.v("calendarTest", "event");
         } catch (IOException e) {
             e.printStackTrace();
+            Log.v("calendarTest", e.toString());
         }
-        System.out.printf("Event created: %s\n", event.getHtmlLink());
+        Log.v("calendarTest", "tried to set event");
 
     }
 }

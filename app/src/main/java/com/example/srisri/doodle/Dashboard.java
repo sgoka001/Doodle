@@ -31,6 +31,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.calendar.CalendarScopes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -120,6 +123,7 @@ public class Dashboard extends AppCompatActivity {
     }
 
     AcceptEventAdapter acceptInvites;
+    GoogleAccountCredential mCredential;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +134,19 @@ public class Dashboard extends AppCompatActivity {
         final ListView invites = (ListView)findViewById(R.id.event_invite_pending);
         acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, pendingInvites);
         invites.setAdapter(acceptInvites);
+
+        final String[] SCOPES = { CalendarScopes.CALENDAR };
+
+        mCredential = GoogleAccountCredential.usingOAuth2(
+                getApplicationContext(), Arrays.asList(SCOPES))
+                .setBackOff(new ExponentialBackOff());
+
+        final googleCalendar test = new googleCalendar(mCredential);
+        new Thread(new Runnable() {
+            public void run() {
+                test.createEvent();
+            }
+        }).start();
 
         DatabaseReference dbUserInvites = FirebaseDatabase.getInstance().getReference("invites");
         Query query = dbUserInvites.orderByChild("email").equalTo(GlobalVars.getUserEmail());
