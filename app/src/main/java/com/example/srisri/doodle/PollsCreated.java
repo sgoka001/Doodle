@@ -98,7 +98,7 @@ public class PollsCreated extends AppCompatActivity {
 
             }
         });
-            ;
+
 
             //adapters.notifyDataSetChanged();
             mListView = (ListView) findViewById(R.id.listlist);
@@ -111,7 +111,8 @@ public class PollsCreated extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                     GlobalVars.getInstance().setEvent(eventid.get(position));
-                    Intent myIntent = new Intent(view.getContext(), ViewEventInfo.class);
+//                    Intent myIntent = new Intent(view.getContext(), ViewEventInfo.class);
+                    Intent myIntent = new Intent(view.getContext(), EventOwnerView.class);
                     startActivityForResult(myIntent, 0);
 
 

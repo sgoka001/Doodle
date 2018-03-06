@@ -7,7 +7,17 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <Button
+            android:id="@+id/btnFinalize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yes"
+            android:layout_below="@+id/svEventOwner"
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/txtTitle"
@@ -16,7 +26,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:text="Event Title" />
+            android:text="Event Title"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 
         <TextView
             android:id="@+id/txtDesc"
@@ -25,11 +36,16 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/txtTitle"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:text="Event Description" />
+
         <ScrollView
-            android:id= "@+id/svEventOwner"
+            android:id="@+id/svEventOwner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtDesc">
 
         </ScrollView>
     </RelativeLayout>

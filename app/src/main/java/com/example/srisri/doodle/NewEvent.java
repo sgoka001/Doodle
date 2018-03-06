@@ -1,14 +1,19 @@
 package com.example.srisri.doodle;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -50,8 +55,8 @@ public class NewEvent extends AppCompatActivity {
             }
         });
         final Spinner dropdown = findViewById(R.id.spinner);
-        String[] items = new String[]{"1:", "2:", "3:", "4:", "5:", "6:",
-                "7:", "8:", "9:", "10:","11:", "12:"};
+        String[] items = new String[]{"1", "2", "3", "4", "5", "6",
+                "7", "8", "9", "10","11", "12"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
 
@@ -142,5 +147,25 @@ public class NewEvent extends AppCompatActivity {
                 selected_dates = data.getStringArrayListExtra("SelectedDates");
             }
         }
+    }
+
+    public void show_dates(View v) {
+        String[] newArr = new String[selected_dates.size()];
+        newArr = selected_dates.toArray(newArr);
+        final String[] otherArr = newArr;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Selected dates");
+        builder.setItems(otherArr, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int item) {
+                Toast.makeText(getApplicationContext(), otherArr[item], Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        AlertDialog alert = builder.create();
+
+        alert.show();
     }
 }
