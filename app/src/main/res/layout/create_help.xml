@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#9fbfae"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
 
     <TextView
         android:id="@+id/textView3"
@@ -23,7 +24,8 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:layout_editor_absoluteX="151dp" />
+        tools:layout_editor_absoluteX="151dp"
+        android:gravity="center_horizontal"/>
 
     <TextView
         android:id="@+id/textView6"

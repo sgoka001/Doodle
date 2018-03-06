@@ -44,10 +44,12 @@ public class GlobalVars extends Application {
         inviteID = id;
     }
 
-    public static void setUserId (String id)
+    public void setUserId (String id)
     {
         userID = id;
     }
+
+    public void setInviteID(String id) {inviteID = id;}
 
     public static String getUserName(){
         return userName;
@@ -71,7 +73,7 @@ public class GlobalVars extends Application {
         GlobalVars.eventID = eventID;
     }
 
-    public static  String getInviteID(){return inviteID;}
+    public static  String getInvite(){return inviteID;}
 
     public static void logout(){
         userPw = null;
