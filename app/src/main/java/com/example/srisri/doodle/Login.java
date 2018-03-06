@@ -207,8 +207,8 @@ public class Login extends AppCompatActivity{
                                 GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
                                 Log.v("key",ret.getKey().toString());
                                 Toast.makeText(Login.this,"set globe vars2",Toast.LENGTH_SHORT).show();
-                                Intent dashboard=new Intent(Login.this,Dashboard.class);
-                                startActivity(dashboard);
+                                /*Intent dashboard=new Intent(Login.this,Dashboard.class);
+                                startActivity(dashboard);*/
                             }
 
                         }
@@ -277,8 +277,8 @@ public class Login extends AppCompatActivity{
                                                             DataSnapshot ret=dataSnapshot.getChildren().iterator().next();
                                                             GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
                                                             Toast.makeText(Login.this,"set globe vars",Toast.LENGTH_SHORT).show();
-                                                            Intent dashboard=new Intent(Login.this,Dashboard.class);
-                                                            startActivity(dashboard);
+                                                            /*Intent dashboard=new Intent(Login.this,Dashboard.class);
+                                                            startActivity(dashboard);*/
                                                         }
 
                                                     }
