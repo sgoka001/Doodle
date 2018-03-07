@@ -128,10 +128,35 @@ public class Login extends AppCompatActivity{
         Toast.makeText(Login.this,"OnStart",Toast.LENGTH_SHORT).show();
 
 
-        GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this);
+        final GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this);
 
         if(account!=null)
         {
+            final FirebaseDatabase database=FirebaseDatabase.getInstance();
+            final FirebaseUser user=authu.getCurrentUser();
+            DatabaseReference ref=database.getReference("Users");
+            Query query=ref.orderByChild("email").equalTo(user.getEmail());
+            query.addListenerForSingleValueEvent(new ValueEventListener(){
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot){
+                    if(dataSnapshot.getValue()!=null){
+                        DataSnapshot ret=dataSnapshot.getChildren().iterator().next();
+                        GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
+                        Log.v("key",ret.getKey().toString());
+                        Toast.makeText(Login.this,"set globe vars3",Toast.LENGTH_SHORT).show();
+                                /*Intent dashboard=new Intent(Login.this,Dashboard.class);
+                                startActivity(dashboard);*/
+                    }
+
+                }
+
+
+                @Override
+                public void onCancelled(DatabaseError databaseError){
+
+                }
+            });
+
             Toast.makeText(Login.this,"dash",Toast.LENGTH_SHORT).show();
             Intent dashboard=new Intent(Login.this,Dashboard.class);
             startActivity(dashboard);
