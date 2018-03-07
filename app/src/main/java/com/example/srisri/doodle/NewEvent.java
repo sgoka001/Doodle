@@ -151,6 +151,10 @@ public class NewEvent extends AppCompatActivity {
     }
 
     public void show_dates(View v) {
+        if(selected_dates == null || selected_dates.isEmpty()) {
+            Toast.makeText(NewEvent.this, "You never selected any dates!", Toast.LENGTH_LONG).show();
+            return;
+        }
         String[] newArr = new String[selected_dates.size()];
         newArr = selected_dates.toArray(newArr);
         final String[] otherArr = newArr;
