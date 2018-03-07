@@ -120,6 +120,8 @@ public class NewEvent extends AppCompatActivity {
                 String location = getIntent().getStringExtra("location");
                 myRef = database.getReference("Events/" + Integer.toString(eventID) + "/location");
                 myRef.setValue(location);
+                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/owner");
+                myRef.setValue(GlobalVars.getInstance().getUserEmail());
                 boolean yesNoCheck = togglebutton1.isChecked();
                 boolean limitCheck = togglebutton2.isChecked();
                 String yesno = "Yes/No: " + String.valueOf(yesNoCheck);
