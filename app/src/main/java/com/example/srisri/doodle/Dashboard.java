@@ -26,7 +26,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,6 +50,7 @@ import java.util.List;
 public class Dashboard extends AppCompatActivity {
 
     FirebaseAuth authu;
+
     FirebaseAuth.AuthStateListener authList;
     GoogleSignInClient mGoogleSignInClient;
     @Override
@@ -69,6 +72,42 @@ public class Dashboard extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final FirebaseUser user = authu.getCurrentUser();
+        Log.v("user2", user.getEmail());
+        final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        if (account != null) {
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+            DatabaseReference ref = database.getReference("Users");
+            Query query = ref.orderByChild("email").equalTo(user.getEmail());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
+                        GlobalVars.getInstance().setUser(user.getDisplayName(), user.getEmail(), ret.getKey().toString());
+                        Log.v("key", ret.getKey().toString());
+                        Log.v("user3", user.getEmail());
+                                /*Intent dashboard=new Intent(Login.this,Dashboard.class);
+                                startActivity(dashboard);*/
+                    }
+
+                }
+
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
     }
 
@@ -95,8 +134,17 @@ public class Dashboard extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
-       mGoogleSignInClient.signOut();
+        mGoogleSignInClient=GoogleSignIn.getClient(this,gso);
+        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //authu.signOut();
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                });
+       // FirebaseAuth.getInstance().signOut();
+
 
              //   .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                //     @Override
@@ -123,7 +171,7 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-
+        authu = FirebaseAuth.getInstance();
         final ListView invites = (ListView)findViewById(R.id.event_invite_pending);
         acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, pendingInvites);
         invites.setAdapter(acceptInvites);
@@ -173,6 +221,7 @@ public class Dashboard extends AppCompatActivity {
 
             }
         });
+
     }
 
 

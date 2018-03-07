@@ -57,7 +57,6 @@ public class PollsCreated extends AppCompatActivity {
         String inst = GlobalVars.getInstance().getUserEmail();
         //final String inst = "pgior001@ucr.edu";
         mListView = (ListView)findViewById(R.id.listlist);
-        //final FirebaseUser user = authu.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("Events");
         Query query = ref.orderByChild("owner").equalTo(inst);

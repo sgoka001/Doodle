@@ -56,7 +56,6 @@ public class Login extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Toast.makeText(Login.this,"OnCreate",Toast.LENGTH_SHORT).show();
-
         Button loginBtn=(Button)findViewById(R.id.enter_button);
 
         loginBtn.setOnClickListener(new View.OnClickListener(){
@@ -105,11 +104,13 @@ public class Login extends AppCompatActivity{
                             }
                             else
                             {
-                                GlobalVars.getInstance().setUser(sharedPref.getString("name", "none"),
-                                        sharedPref.getString("userEmail", "none"),
-                                        sharedPref.getString("id", "none"));
-                                Intent dashboard = new Intent(Login.this, Dashboard.class);
-                                startActivity(dashboard);
+                                if(child.getValue().equals(sharedPref.getString("name","none"))) {
+                                    GlobalVars.getInstance().setUser(sharedPref.getString("name", "none"),
+                                            sharedPref.getString("userEmail", "none"),
+                                            sharedPref.getString("id", "none"));
+                                    Intent dashboard = new Intent(Login.this, Dashboard.class);
+                                    startActivity(dashboard);
+                                }
                             }
                         }
                     }
@@ -128,14 +129,14 @@ public class Login extends AppCompatActivity{
     protected void onStart(){
         super.onStart();
         Toast.makeText(Login.this,"OnStart",Toast.LENGTH_SHORT).show();
-
-
+        final FirebaseUser user=authu.getCurrentUser();
+        Log.v("user2", user.getEmail());
         final GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this);
 
         if(account!=null)
         {
             final FirebaseDatabase database=FirebaseDatabase.getInstance();
-            final FirebaseUser user=authu.getCurrentUser();
+
             DatabaseReference ref=database.getReference("Users");
             Query query=ref.orderByChild("email").equalTo(user.getEmail());
             query.addListenerForSingleValueEvent(new ValueEventListener(){
@@ -145,7 +146,7 @@ public class Login extends AppCompatActivity{
                         DataSnapshot ret=dataSnapshot.getChildren().iterator().next();
                         GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
                         Log.v("key",ret.getKey().toString());
-                        Toast.makeText(Login.this,"set globe vars3",Toast.LENGTH_SHORT).show();
+                        Log.v("user3", user.getEmail());
                                 /*Intent dashboard=new Intent(Login.this,Dashboard.class);
                                 startActivity(dashboard);*/
                     }
@@ -159,7 +160,7 @@ public class Login extends AppCompatActivity{
                 }
             });
 
-            Toast.makeText(Login.this,"dash",Toast.LENGTH_SHORT).show();
+
             Intent dashboard=new Intent(Login.this,Dashboard.class);
             startActivity(dashboard);
         }
@@ -221,7 +222,7 @@ public class Login extends AppCompatActivity{
 
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         super.onActivityResult(requestCode,resultCode,data);
-
+        final FirebaseUser user=authu.getCurrentUser();
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if(requestCode==GOOGLESN){
             Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -229,9 +230,8 @@ public class Login extends AppCompatActivity{
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account=task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                final FirebaseUser user=authu.getCurrentUser();
-                if(user!=null){
                     final FirebaseDatabase database=FirebaseDatabase.getInstance();
+                    final GoogleSignInAccount accounts=GoogleSignIn.getLastSignedInAccount(this);
                     DatabaseReference ref=database.getReference("Users");
                     Query query=ref.orderByChild("email").equalTo(user.getEmail());
                     query.addListenerForSingleValueEvent(new ValueEventListener(){
@@ -239,11 +239,14 @@ public class Login extends AppCompatActivity{
                         public void onDataChange(DataSnapshot dataSnapshot){
                             if(dataSnapshot.getValue()!=null){
                                 DataSnapshot ret=dataSnapshot.getChildren().iterator().next();
-                                GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
-                                Log.v("key",ret.getKey().toString());
-                                Toast.makeText(Login.this,"set globe vars2",Toast.LENGTH_SHORT).show();
+
+                                if(!accounts.getEmail().equals(user.getEmail())) {
+                                    GlobalVars.getInstance().setUser(user.getDisplayName(), user.getEmail(), ret.getKey().toString());
+                                    Log.v("key", ret.getKey().toString());
+                                    Log.v("user1", user.getEmail());
                                 /*Intent dashboard=new Intent(Login.this,Dashboard.class);
                                 startActivity(dashboard);*/
+                                }
                             }
 
                         }
@@ -253,7 +256,7 @@ public class Login extends AppCompatActivity{
                         public void onCancelled(DatabaseError databaseError){
 
                         }
-                    });}
+                    });
                 /*GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),user.get);
                 Toast.makeText(Login.this, "set globe vars2", Toast.LENGTH_SHORT).show();
                 Intent dashboard = new Intent(Login.this, Dashboard.class);
@@ -311,7 +314,6 @@ public class Login extends AppCompatActivity{
                                                         if(dataSnapshot.getValue()!=null){
                                                             DataSnapshot ret=dataSnapshot.getChildren().iterator().next();
                                                             GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
-                                                            Toast.makeText(Login.this,"set globe vars",Toast.LENGTH_SHORT).show();
                                                             /*Intent dashboard=new Intent(Login.this,Dashboard.class);
                                                             startActivity(dashboard);*/
                                                         }

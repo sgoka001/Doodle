@@ -23,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,7 +52,6 @@ public class PollsParticipated extends AppCompatActivity {
         // adapters=new ArrayAdapter<String>(this,R.layout.create_help,eventss);
         //mListView.setAdapter(adapters);
         String inst = GlobalVars.getInstance().getUserEmail();
-
         //final String inst = "pgior001@ucr.edu";
         mListView = (ListView)findViewById(R.id.listlist2);
         //final FirebaseUser user = authu.getCurrentUser();
