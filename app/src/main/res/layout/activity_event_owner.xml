@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#9fbfae">
 
     <RelativeLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
@@ -13,31 +16,34 @@
 
         <Button
             android:id="@+id/btnFinalize"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/yes"
             android:layout_below="@+id/svEventOwner"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:background="#00ffff"/>
 
         <TextView
             android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:text="Event Title"
+            android:background="#ededed"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 
         <TextView
             android:id="@+id/txtDesc"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/txtTitle"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:text="Event Description" />
+            android:text="Event Description"
+            android:background="#ededed"/>
 
         <ScrollView
             android:id="@+id/svEventOwner"
