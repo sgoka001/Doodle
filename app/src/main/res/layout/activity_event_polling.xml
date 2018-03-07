@@ -22,6 +22,13 @@
             android:layout_height="wrap_content"
             android:text="Location" />
 
+        <Button
+            android:id="@+id/create_google_calendar_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add to Calendar"
+            android:visibility="invisible" />
+
         <ScrollView
             android:id="@+id/pollingScrollView"
             android:layout_width="match_parent"
