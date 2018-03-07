@@ -33,7 +33,7 @@ import java.util.List;
 public class NewEvent extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    List<String> selected_times = new ArrayList<String>();
+    List<String> selected_times = new ArrayList<>();
     List<String> selected_dates = new ArrayList<>();
 
     ToggleButton togglebutton1;
@@ -91,11 +91,11 @@ public class NewEvent extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int eventID = Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1;
-                if(selected_dates.size() == 0) {
+                if(selected_dates == null || selected_dates.isEmpty()) {
                     Toast.makeText(NewEvent.this, "You never selected any dates!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(selected_times.size() == 0) {
+                if(selected_times == null || selected_dates.isEmpty()) {
                     Toast.makeText(NewEvent.this, "You never selected any times!", Toast.LENGTH_LONG).show();
                     return;
                 }
