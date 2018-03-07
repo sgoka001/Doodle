@@ -130,7 +130,7 @@ public class NewEvent extends AppCompatActivity {
                 myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
                 myRef.setValue(limit);
                 Intent send_invites = new Intent(NewEvent.this, send_invite.class);
-                send_invites.putExtra("eventID", eventID);
+                send_invites.putExtra("eventID", Integer.toString(eventID));
                 startActivity(send_invites);
             }
             @Override

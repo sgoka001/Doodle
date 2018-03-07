@@ -65,12 +65,11 @@ public class send_invite extends AppCompatActivity {
                                     long arg3) {
                 // TODO Auto-generated method stub
                 //do your job here, position is the item position in ListView
-                Log.v("testing", Integer.toString(position));
+                Log.v("positionNumber", Integer.toString(position));
                 setEmails.remove(position);
                 setEmailsAdapter.notifyDataSetChanged();
             }
         });
-
         textView.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -121,14 +120,19 @@ public class send_invite extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int first = Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1;
+                Intent intent = getIntent();
+                int eventId = Integer.parseInt(intent.getStringExtra("eventID"));
                 for(int i = 0; i < setEmails.size(); ++i){
                     HashMap<String, Object> invite = new HashMap<>();
                     invite.put("email", setEmails.get(i));
-                    invite.put("eventId", 1);
+                    invite.put("eventId", eventId);
                     invite.put("accepted", false);
                     invite.put("declined", false);
                     ref.child(Integer.toString(first  + i)).setValue(invite);
                 }
+                Intent dashboard = new Intent(send_invite.this, Dashboard.class);
+                dashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(dashboard);
             }
 
             @Override

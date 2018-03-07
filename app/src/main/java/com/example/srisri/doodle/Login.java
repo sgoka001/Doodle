@@ -80,7 +80,9 @@ public class Login extends AppCompatActivity{
         authu=FirebaseAuth.getInstance();
         final SharedPreferences sharedPref=PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String id=sharedPref.getString("id","none");
+        Log.v("userID", String.valueOf(!id.equals("none")));
         if(!id.equals("none")){
+            Log.v("userID", "accepted");
             final FirebaseDatabase database=FirebaseDatabase.getInstance();
             DatabaseReference ref=database.getReference("Users");
             Query query=ref.orderByKey().equalTo(id);

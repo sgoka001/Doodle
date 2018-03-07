@@ -66,6 +66,14 @@ public class Polling extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_polling);
 
+        Button create_calendar_event = (Button)findViewById(R.id.create_google_calendar_event);
+        create_calendar_event.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                createCalendarEvent();
+            }
+        });
+
         newDesc = findViewById(R.id.text_pollingDesc);
         btnLocation = findViewById(R.id.btn_location);
 
@@ -472,20 +480,42 @@ public class Polling extends AppCompatActivity {
 
 
                     Event event = new Event()
-                            .setSummary("Event- April 2016")
-                            .setLocation("Dhaka");
+                            .setSummary(newDesc.getText().toString())
+                            .setLocation(btnLocation.getText().toString());
 
-                    DateTime startDateTime = new DateTime("2018-04-17T18:10:00+06:00");
+                    String[] tmp = choiceList.get(0).split(" ");
+                    String month = "";
+                    Log.v("calendarTest", tmp[5] + '-' + 0 +  3 + "-" + tmp[2] + 'T' + tmp[3] + "+00:00");
+                    if(tmp[1].equals("Jan"))
+                        month = "01";
+                    else if(tmp[1].equals("Feb"))
+                        month = "02";
+                    else if(tmp[1].equals("Mar"))
+                        month = "03";
+                    else if(tmp[1].equals("Apr"))
+                        month = "04";
+                    else if(tmp[1].equals("May"))
+                        month = "05";
+                    else if(tmp[1].equals("June"))
+                        month = "06";
+                    else if(tmp[1].equals("July"))
+                        month = "07";
+                    else if(tmp[1].equals("Aug"))
+                        month = "08";
+                    else if(tmp[1].equals("Sept"))
+                        month = "08";
+                    else if(tmp[1].equals("Oct"))
+                        month = "10";
+                    else if(tmp[1].equals("Nov"))
+                        month = "11";
+                    else if(tmp[1].equals("Dec"))
+                        month = "12";
+                    DateTime startDateTime = new DateTime(tmp[5] + '-' + month + "-" + tmp[2] + 'T' + tmp[3] + "-08:00");
                     EventDateTime start = new EventDateTime()
                             .setDateTime(startDateTime)
                             .setTimeZone("America/Los_Angeles");
                     event.setStart(start);
-
-                    DateTime endDateTime = new DateTime("2018-04-17T18:40:00+06:00");
-                    EventDateTime end = new EventDateTime()
-                            .setDateTime(endDateTime)
-                            .setTimeZone("America/Los_Angeles");
-                    event.setEnd(end);
+                    event.setEnd(start);
 
                     EventReminder[] reminderOverrides = new EventReminder[]{
                             new EventReminder().setMethod("email").setMinutes(24 * 60),
