@@ -60,8 +60,10 @@ public class Polling extends AppCompatActivity {
         myRefAccept.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                boolean accept = dataSnapshot.getValue(boolean.class);
+                boolean accept = true;
+                if(dataSnapshot.getValue() != null) {
+                    accept = dataSnapshot.getValue(boolean.class);
+                }
                 //if it wasn't accepted yet we should open popup
                 if(!accept)
                 {
@@ -103,7 +105,9 @@ public class Polling extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                eventid = dataSnapshot.getValue().toString();
+                if(dataSnapshot.getValue() != null) {
+                    eventid = dataSnapshot.getValue().toString();
+                }
 
                 //Event Name
                 DatabaseReference myRef = database.getReference("Events/"+ eventid +"/name");
@@ -193,7 +197,10 @@ public class Polling extends AppCompatActivity {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     // This method is called once with the initial value and again
                                     // whenever data at this location is updated.
-                                    boolean value = dataSnapshot.getValue(boolean.class);
+                                    boolean value =false;
+                                    if(dataSnapshot.getValue() != null) {
+                                          value = dataSnapshot.getValue(boolean.class);
+                                    }
                                     boxChoice.setChecked(value);
                                 }
 
@@ -248,7 +255,9 @@ public class Polling extends AppCompatActivity {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             // This method is called once with the initial value and again
                                             // whenever data at this location is updated.
-                                            temp = dataSnapshot.getValue(boolean.class);
+                                             if(dataSnapshot.getValue() != null) {
+                                                 temp = dataSnapshot.getValue(boolean.class);
+                                             }
                                             if (temp) {
                                                 boxChoice = findViewById(true_id);
 
