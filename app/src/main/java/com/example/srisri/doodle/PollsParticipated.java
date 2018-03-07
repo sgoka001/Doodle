@@ -180,10 +180,10 @@ public class PollsParticipated extends AppCompatActivity {
             View rowView = mInflater.inflate(R.layout.create_help, parent, false);
             TextView textView = (TextView)rowView.findViewById(R.id.textView3);
             TextView loc = (TextView)rowView.findViewById(R.id.textView5);
-            TextView id = (TextView)rowView.findViewById(R.id.textView6);
-            textView.setText(eventss.get(position));
-            loc.setText(titles.get(position));
-            id.setText(inviteid.get(position));
+            //extView id = (TextView)rowView.findViewById(R.id.textView6);
+            textView.setText(titles.get(position));
+            loc.setText(eventss.get(position));
+            //id.setText(inviteid.get(position));
 
 
             return rowView;
