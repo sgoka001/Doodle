@@ -36,9 +36,6 @@ public class NewEvent extends AppCompatActivity {
     List<String> selected_times = new ArrayList<>();
     List<String> selected_dates = new ArrayList<>();
 
-    ToggleButton togglebutton1;
-    ToggleButton togglebutton2;
-
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -80,8 +77,6 @@ public class NewEvent extends AppCompatActivity {
                 Toast.makeText(NewEvent.this, "Added: " + spinnertext + "to your event!", Toast.LENGTH_LONG).show();
             }
         });
-        togglebutton1 = findViewById(R.id.toggleButton);
-        togglebutton2 = findViewById(R.id.toggleButton2);
     }
 
     public void finishEvent(View v) {
@@ -122,14 +117,6 @@ public class NewEvent extends AppCompatActivity {
                 myRef.setValue(location);
                 myRef = database.getReference("Events/" + Integer.toString(eventID) + "/owner");
                 myRef.setValue(GlobalVars.getInstance().getUserEmail());
-                boolean yesNoCheck = togglebutton1.isChecked();
-                boolean limitCheck = togglebutton2.isChecked();
-                String yesno = "Yes/No: " + String.valueOf(yesNoCheck);
-                String limit = "Limit: " + String.valueOf(limitCheck);
-                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/YesNo");
-                myRef.setValue(yesno);
-                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/Limit");
-                myRef.setValue(limit);
                 Intent send_invites = new Intent(NewEvent.this, send_invite.class);
                 send_invites.putExtra("eventID", Integer.toString(eventID));
                 startActivity(send_invites);
