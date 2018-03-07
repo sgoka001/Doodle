@@ -52,8 +52,6 @@ public class PollsCreated extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_polls_created);
         authu = FirebaseAuth.getInstance();
-        TextView txt = (TextView) findViewById(R.id.textbox);
-        txt.setText("Hello");
        // adapters=new ArrayAdapter<String>(this,R.layout.create_help,eventss);
         //mListView.setAdapter(adapters);
         String inst = GlobalVars.getInstance().getUserEmail();

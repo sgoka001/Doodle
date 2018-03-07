@@ -38,41 +38,26 @@ public class ViewEventInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event_info);
         userList = findViewById(R.id.partUsers);
-        users.add("1");
-        DatabaseReference dbEventInfo = FirebaseDatabase.getInstance().getReference("Events");
-        Query query = dbEventInfo.orderByKey().equalTo(GlobalVars.getEventID());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue()!= null)
-                {
-                    DataSnapshot val = dataSnapshot.getChildren().iterator().next();
-                    String title = val.child("name").getValue().toString();
-                    TextView text = (TextView)findViewById(R.id.textView4);
-                    text.setText(title);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        String eid = GlobalVars.getInstance().getEventID();
+        Log.v("Eid", eid);
         database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("invites");
-        query = ref.orderByChild("eventId").equalTo(GlobalVars.getEventID());
+        Query query = ref.orderByChild("eventId").equalTo(Integer.valueOf(eid));
         Log.v("Query", query.toString());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() != null ) {
+                    Log.v("datasnap", dataSnapshot.getValue().toString());
                     Iterator ret = dataSnapshot.getChildren().iterator();
+                    //title=(ret.child("location").getValue().toString());//+ " \n" + ret.child("name").getValue().toString());
+                    //String lala = ret.child("name").getValue().toString();
                     while(ret.hasNext()) {
                         DataSnapshot rets = (DataSnapshot)ret.next();
-                        username = (rets.child("email").getValue().toString());//+ " \n" + ret.child("name").getValue().toString());
-                        users.add(username);
-                        Log.v("username", username);
+                        String user = rets.child("email").getValue().toString();
+                        Log.v("id", user);
+                        //GlobalVars.getInstance().setEventID(ret.getKey()+1);
+                        users.add(user);
                         createAdapter = new CreatedAdapter(ViewEventInfo.this, R.layout.event_info_help, users);
                         userList.setAdapter(createAdapter);
                         createAdapter.notifyDataSetChanged();
@@ -86,12 +71,37 @@ public class ViewEventInfo extends AppCompatActivity {
                     //Button button = (Button) findViewById(R.id.textView3);
                     //button.setText(title);
                 }
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+        DatabaseReference dbEventInfo = FirebaseDatabase.getInstance().getReference("Events");
+        query = dbEventInfo.orderByKey().equalTo(GlobalVars.getEventID());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!= null)
+                {
+                    DataSnapshot val = dataSnapshot.getChildren().iterator().next();
+                    String title = val.child("name").getValue().toString();
+                    String location = val.child("location").getValue().toString();
+                    TextView text = (TextView)findViewById(R.id.textView4);
+                    TextView textloc = (TextView)findViewById(R.id.textView7);
+                    text.setText(title);
+                    textloc.setText(location);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         ;
 
         //adapters.notifyDataSetChanged();

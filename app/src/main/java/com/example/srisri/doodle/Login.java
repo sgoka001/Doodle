@@ -118,65 +118,9 @@ public class Login extends AppCompatActivity{
     protected void onStart(){
         super.onStart();
         Toast.makeText(Login.this,"OnStart",Toast.LENGTH_SHORT).show();
-        // Sign in success, update UI with the signed-in user's information
-            /*Log.d("TAG", "signInWithCredential:success");
-            final FirebaseUser user = authu.getCurrentUser();
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference ref = database.getReference("Users");
-            Query query = ref.orderByChild("email").equalTo(user.getEmail());
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getChildrenCount() != 0){
-                        //throw null because user found with email
-                        Log.v("register", "error email already in use");
-                    } else {
-                        Query id = ref.orderByKey().limitToLast(1);
-                        id.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Log.v("register", dataSnapshot.getChildren().iterator().next().getKey());
-                                Log.v("register", String.valueOf(Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1));
-                                HashMap<String, Object> users = new HashMap<>();
-                                users.put("name", (user.getDisplayName()));
-                                users.put("email", ((user.getEmail())));
-                                //users.put("password", ((EditText)findViewById(R.id.registration_password)).getText().toString());
-                                ref.child(String.valueOf(Integer.parseInt(dataSnapshot.getChildren().iterator().next().getKey()) + 1)).setValue(users);
-                                Intent dashboard = new Intent(Login.this, Dashboard.class);
-                                Log.v("userid", dataSnapshot.getChildren().iterator().next().getKey());
-                                GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail());
-                                startActivity(dashboard);
-                                finish();
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-            //User newU = new User(user.getEmail(), user.getDisplayName());
-
-            //user.getDisplayName();
-            mDatabase = FirebaseDatabase.getInstance().getReference();
-
-            Intent dashboard = new Intent(Login.this, Dashboard.class);
-            startActivity(dashboard);
-            //mDatabase.child("Users").setValue(newU);*/
-
-
-        //updateUI(user);
 
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this);
-        //Log.v("is null",String.valueOf(account.getEmail()==null));
 
         if(account!=null)
         {
@@ -184,32 +128,7 @@ public class Login extends AppCompatActivity{
             Intent dashboard=new Intent(Login.this,Dashboard.class);
             startActivity(dashboard);
         }
-        //final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //DatabaseReference ref = database.getReference("Users");
-//        Log.v("ErrorCheck", account.getEmail());
-        /*if(account != null)
-        {
-            //Query query = ref.orderByChild("email").equalTo(account.getEmail());
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                   /* Log.v("ErrorCheck",String.valueOf(dataSnapshot.getChildren().iterator().hasNext()));
-                    DataSnapshot ret = dataSnapshot.getChildren().iterator().next();
 
-                    GlobalVars.getInstance().setUser(ret.child("name").getValue().toString(),
-                            ret.child("email").getValue().toString(), ret.child("password").getValue().toString(),
-                            ret.getKey().toString());*/
-              /*  }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });*/
-
-            /*//GlobalVars.getInstance().setUser(account.getDisplayName(),account.getEmail(),);
-            //Intent dashboard = new Intent(Login.this, Dashboard.class);
-            startActivity(dashboard);
-        }*/
 
     }
 
@@ -288,8 +207,8 @@ public class Login extends AppCompatActivity{
                                 GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
                                 Log.v("key",ret.getKey().toString());
                                 Toast.makeText(Login.this,"set globe vars2",Toast.LENGTH_SHORT).show();
-                                Intent dashboard=new Intent(Login.this,Dashboard.class);
-                                startActivity(dashboard);
+                                /*Intent dashboard=new Intent(Login.this,Dashboard.class);
+                                startActivity(dashboard);*/
                             }
 
                         }
@@ -358,8 +277,8 @@ public class Login extends AppCompatActivity{
                                                             DataSnapshot ret=dataSnapshot.getChildren().iterator().next();
                                                             GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
                                                             Toast.makeText(Login.this,"set globe vars",Toast.LENGTH_SHORT).show();
-                                                            Intent dashboard=new Intent(Login.this,Dashboard.class);
-                                                            startActivity(dashboard);
+                                                            /*Intent dashboard=new Intent(Login.this,Dashboard.class);
+                                                            startActivity(dashboard);*/
                                                         }
 
                                                     }
