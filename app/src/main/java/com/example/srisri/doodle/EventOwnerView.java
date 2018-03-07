@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -43,6 +46,72 @@ public class EventOwnerView extends AppCompatActivity{
     //used to make sure the app doesn't crash after deleting from database
     boolean DoOnce = true;
 
+    //create menu for deleting event
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.event_owner_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.delete_event_menu:
+                delete_event();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //function to delete the event and all invites associated with the event
+    public void delete_event(){
+        //Set Firebase database instance
+        database = FirebaseDatabase.getInstance();
+
+        DoOnce = false;
+        //Delete the Event
+        DatabaseReference delEventRef = database.getReference("Events/" + eventid);
+        delEventRef.removeValue();
+
+        //Delete all invites associated with the event
+        //Go through all invites and see if their_eventid == eventID
+        DatabaseReference delInviteRef = database.getReference().child("invites");
+        delInviteRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //cycle through all invites delete if it has matching eventId
+                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                   for (DataSnapshot data : dsp.getChildren()) {
+                        final String key = data.getKey();
+                        //if key is "email" we dont care
+                        if (key.equals("eventId")) {
+                            //and the two are the same then addToChoiceList is true
+                            if (data.getValue(Integer.class).toString().equals(eventid)) {
+                                DatabaseReference delEvent = database.getReference("invites/" + dsp.getKey());
+                                delEvent.removeValue();
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                Toast.makeText(EventOwnerView.this,"Deleted", Toast.LENGTH_LONG ).show();
+                //Back to Dashboard
+                Intent loginscreen = new Intent(EventOwnerView.this, Dashboard.class);
+                loginscreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);;
+                startActivity(loginscreen);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(EventOwnerView.this,"FAILED", Toast.LENGTH_LONG ).show();
+            }});
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +138,14 @@ public class EventOwnerView extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextView EventTitle = findViewById(R.id.txtTitle);
-                EventTitle.setText(dataSnapshot.getValue().toString());
+                if(dataSnapshot.getValue() != null) {
+                    EventTitle.setText(dataSnapshot.getValue().toString());
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(EventOwnerView.this,"FAILED", Toast.LENGTH_LONG ).show();
+                Toast.makeText(EventOwnerView.this, "FAILED", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -83,35 +154,38 @@ public class EventOwnerView extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TextView EventLoc = findViewById(R.id.txtDesc);
-                EventLoc.setText(dataSnapshot.getValue().toString());
+                if(dataSnapshot.getValue() != null){
+                    EventLoc.setText(dataSnapshot.getValue().toString());
+                }
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(EventOwnerView.this,"FAILED", Toast.LENGTH_LONG ).show();
+                Toast.makeText(EventOwnerView.this, "FAILED", Toast.LENGTH_LONG).show();
             }
         });
 
         //Get event choices, results of polling, dynamically created objects
-        DatabaseReference myRefChoices = database.getReference("Events/"+ eventid ).child("choices");
+        DatabaseReference myRefChoices = database.getReference("Events/" + eventid).child("choices");
         myRefChoices.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //fill up the choiceList with different choices
                 try {
                     MakeLinear.acquire();
-                } catch(InterruptedException e){
+                } catch (InterruptedException e) {
                     Log.v("error", e.toString());
                 }
                 choiceList.put("accepted", 0);
                 choiceList.put("declined", 0);
 
-//                final String checkKey = dataSnapshot.getKey();
-//                Toast.makeText(EventOwnerView.this,checkKey, Toast.LENGTH_LONG ).show();
+                //                final String checkKey = dataSnapshot.getKey();
+                //                Toast.makeText(EventOwnerView.this,checkKey, Toast.LENGTH_LONG ).show();
 
                 //Pull choices from database and save onto eventChoices and choiceList
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    choiceList.put(dsp.getValue(String.class),0);   //add values
+                    choiceList.put(dsp.getValue(String.class), 0);   //add values
                     eventChoices.put(dsp.getValue(String.class), dsp.getKey());   //add to list of event choices
                 }
 
@@ -129,7 +203,7 @@ public class EventOwnerView extends AppCompatActivity{
                         //wait for top to release the semaphore
                         try {
                             MakeLinear.acquire();
-                        } catch(InterruptedException e){
+                        } catch (InterruptedException e) {
                             Log.v("error", e.toString());
                         }
 
@@ -141,17 +215,17 @@ public class EventOwnerView extends AppCompatActivity{
                                 if (!key.equals("email")) {
                                     //only one that is a string
                                     //if key is equal to eventid
-                                    if (key.equals("eventId") ) {
+                                    if (key.equals("eventId")) {
                                         //and the two are the same then addToChoiceList is true
-                                        if(data.getValue(Integer.class).toString().equals(eventid)) {
+                                        if (data.getValue(Integer.class).toString().equals(eventid)) {
                                             addToChoiceList = true;
                                         }
                                     }
                                     //all else should be true or false boolean
                                     else {
-//                                Toast.makeText(EventOwnerView.this,key, Toast.LENGTH_LONG ).show();
-//                                Toast.makeText(EventOwnerView.this,String.valueOf(data.getValue()), Toast.LENGTH_LONG ).show();
-                                        if (((Boolean)data.getValue()) != null && ((Boolean)data.getValue())) {
+                                        //                                Toast.makeText(EventOwnerView.this,key, Toast.LENGTH_LONG ).show();
+                                        //                                Toast.makeText(EventOwnerView.this,String.valueOf(data.getValue()), Toast.LENGTH_LONG ).show();
+                                        if (((Boolean) data.getValue()) != null && ((Boolean) data.getValue())) {
                                             tempInviteList.put(key, true);
                                         }
                                     }
@@ -173,7 +247,7 @@ public class EventOwnerView extends AppCompatActivity{
                             }
                         }
 
-//                        Toast.makeText(EventOwnerView.this,"sizes Final: " + choiceList.size(), Toast.LENGTH_LONG ).show();
+                        //                        Toast.makeText(EventOwnerView.this,"sizes Final: " + choiceList.size(), Toast.LENGTH_LONG ).show();
                         //choiceList = map of keys + # of responses per key
                         //need to create buttons for each response
                         svPollRes = findViewById(R.id.svEventOwner);
@@ -218,12 +292,12 @@ public class EventOwnerView extends AppCompatActivity{
                         //Dynamically Create checkbox polling
                         //Dynamically Create Button to Submit
 
-                        for(String key : choiceList.keySet()){
-                            if(!keyBeforeCB.contains(key)){
+                        for (String key : choiceList.keySet()) {
+                            if (!keyBeforeCB.contains(key)) {
                                 //Create check boxes
                                 boxChoice = new CheckBox(EventOwnerView.this);
                                 choiceName = key + ": " + choiceList.get(key).toString();
-                                boxChoice.setText( choiceName);
+                                boxChoice.setText(choiceName);
                                 boxChoice.setId(id);
                                 choiceId.add(id);
                                 id = id + 1;
@@ -245,7 +319,7 @@ public class EventOwnerView extends AppCompatActivity{
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(EventOwnerView.this,"FAILED", Toast.LENGTH_LONG ).show();
+                        Toast.makeText(EventOwnerView.this, "FAILED", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -253,7 +327,7 @@ public class EventOwnerView extends AppCompatActivity{
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(EventOwnerView.this,"FAILED", Toast.LENGTH_LONG ).show();
+                Toast.makeText(EventOwnerView.this, "FAILED", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -265,23 +339,21 @@ public class EventOwnerView extends AppCompatActivity{
             public void onClick(View view) {
                 boolean Chosen = false;
                 //check if there is a box selected
-                for(Integer id = 0; id < choiceId.size(); id++){
-                    Integer true_id = getResources().getIdentifier(choiceId.get(id).toString(), "id",getPackageName());
-                    if(findViewById(true_id) instanceof CheckBox) {
-                       CheckBox boxes = findViewById(true_id);
-                       if(boxes.isChecked()) {
-                           Chosen = true;
-                       }
+                for (Integer id = 0; id < choiceId.size(); id++) {
+                    Integer true_id = getResources().getIdentifier(choiceId.get(id).toString(), "id", getPackageName());
+                    if (findViewById(true_id) instanceof CheckBox) {
+                        CheckBox boxes = findViewById(true_id);
+                        if (boxes.isChecked()) {
+                            Chosen = true;
+                        }
                     }
                 }
 
-               if(Chosen) {
-                   finalizeEvent();
-               }
-               else
-               {
-                   Toast.makeText(EventOwnerView.this,"You must select one finalized event time", Toast.LENGTH_LONG ).show();
-               }
+                if (Chosen) {
+                    finalizeEvent();
+                } else {
+                    Toast.makeText(EventOwnerView.this, "You must select one finalized event time", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
