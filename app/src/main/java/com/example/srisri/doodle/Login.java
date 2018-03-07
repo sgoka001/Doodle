@@ -101,6 +101,14 @@ public class Login extends AppCompatActivity{
                                     startActivity(dashboard);
                                 }
                             }
+                            else
+                            {
+                                GlobalVars.getInstance().setUser(sharedPref.getString("name", "none"),
+                                        sharedPref.getString("userEmail", "none"),
+                                        sharedPref.getString("id", "none"));
+                                Intent dashboard = new Intent(Login.this, Dashboard.class);
+                                startActivity(dashboard);
+                            }
                         }
                     }
                 }
