@@ -1,19 +1,19 @@
 package com.example.srisri.doodle;
 
-import android.app.Dialog;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
-import android.widget.Adapter;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
+
 import android.widget.EditText;
-import android.widget.ListView;
+
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -27,7 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
 import java.util.List;
 
 public class NewEvent extends AppCompatActivity {
@@ -126,10 +126,9 @@ public class NewEvent extends AppCompatActivity {
                 boolean limitCheck = togglebutton2.isChecked();
                 String yesno = "Yes/No: " + String.valueOf(yesNoCheck);
                 String limit = "Limit: " + String.valueOf(limitCheck);
-                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
+                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/YesNo");
                 myRef.setValue(yesno);
-                i = i + 1;
-                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
+                myRef = database.getReference("Events/" + Integer.toString(eventID) + "/Limit");
                 myRef.setValue(limit);
                 Intent send_invites = new Intent(NewEvent.this, send_invite.class);
                 send_invites.putExtra("eventID", Integer.toString(eventID));
