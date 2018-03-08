@@ -1,6 +1,7 @@
 package com.example.srisri.doodle;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -181,6 +182,7 @@ public class Polling extends AppCompatActivity {
                             boxChoice.setText(choice);
                             boxChoice.setId(id);
                             choiceId.add(id);
+                            boxChoice.setBackgroundColor(Color.parseColor("#ededed"));
                             id = id + 1;
                             boxChoice.setOnClickListener(getOnClickChangeBool(boxChoice));
                             boxContiner.addView(boxChoice);
@@ -213,6 +215,7 @@ public class Polling extends AppCompatActivity {
                         }
                         boxChoice.setId(id);
                         choiceId.add(id);
+                        boxChoice.setBackgroundColor(Color.parseColor("#ededed"));
                         id = id + 1;
 
                         //set all checked checkbox to false if we click not attending
@@ -225,6 +228,7 @@ public class Polling extends AppCompatActivity {
                         Button btnSubmit = new Button(Polling.this);
                         btnSubmit.setText("Submit");
                         btnSubmit.setId(submitId);
+                        btnSubmit.setBackgroundColor(Color.parseColor("#00ffff"));
                         btnSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

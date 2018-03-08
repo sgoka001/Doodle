@@ -1,6 +1,7 @@
 package com.example.srisri.doodle;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -263,6 +264,7 @@ public class EventOwnerView extends AppCompatActivity{
 
                         // * hard code #accepted and # declined  #not attending first as just TEXT VIEW
                         TextView temp = new TextView(EventOwnerView.this);
+                        temp.setBackgroundColor(Color.parseColor("#ededed"));
                         keyBeforeCB.add("accepted");
                         String choiceName = "Number of accepted invites: " + choiceList.get("accepted");
                         temp.setText(choiceName);
@@ -272,6 +274,7 @@ public class EventOwnerView extends AppCompatActivity{
                         boxContiner.addView(temp);
 
                         temp = new TextView(EventOwnerView.this);
+                        temp.setBackgroundColor(Color.parseColor("#ededed"));
                         keyBeforeCB.add("declined");
                         choiceName = "Number of declined invites: " + choiceList.get("declined");
                         temp.setText(choiceName);
@@ -281,6 +284,7 @@ public class EventOwnerView extends AppCompatActivity{
                         boxContiner.addView(temp);
 
                         temp = new TextView(EventOwnerView.this);
+                        temp.setBackgroundColor(Color.parseColor("#ededed"));
                         keyBeforeCB.add("noAttend");
                         choiceName = "Number of not attending: " + choiceList.get("noAttend");
                         temp.setText(choiceName);
@@ -296,6 +300,7 @@ public class EventOwnerView extends AppCompatActivity{
                             if (!keyBeforeCB.contains(key)) {
                                 //Create check boxes
                                 boxChoice = new CheckBox(EventOwnerView.this);
+                                boxChoice.setBackgroundColor(Color.parseColor("#ededed"));
                                 choiceName = key + ": " + choiceList.get(key).toString();
                                 boxChoice.setText(choiceName);
                                 boxChoice.setId(id);

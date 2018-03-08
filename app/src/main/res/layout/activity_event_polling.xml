@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#9fbfae">
 
     <LinearLayout
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:id="@+id/text_pollingDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#ededed"
             android:text="TextView"
             android:textSize="30sp" />
 
@@ -21,23 +27,26 @@
             android:id="@+id/txt_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Location" />
+            android:background="#ededed"
+            android:text="Location"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/create_google_calendar_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#ffffff"
             android:text="Add to Calendar"
             android:visibility="invisible" />
 
         <ScrollView
             android:id="@+id/pollingScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
         </ScrollView>
+
     </LinearLayout>
 
 
