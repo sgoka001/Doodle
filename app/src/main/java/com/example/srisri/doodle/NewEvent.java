@@ -1,20 +1,25 @@
 package com.example.srisri.doodle;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import android.widget.EditText;
 
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -39,10 +44,15 @@ public class NewEvent extends AppCompatActivity {
     Spinner dropdown;
     Spinner dropdown2;
     Spinner dropdown3;
+
+    ListView userList;
+    CreatedAdapter createAdapter;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
+
+        userList = findViewById(R.id.listdates);
 
         TextView displayName = findViewById(R.id.LocName);
         displayName.setText(Location.address);
@@ -77,6 +87,9 @@ public class NewEvent extends AppCompatActivity {
                 String spinnertext = dropdown.getSelectedItem().toString() + ":" +
                         dropdown2.getSelectedItem().toString() + ":00" + " " + dropdown3.getSelectedItem().toString();
                 selected_times.add(spinnertext);
+                createAdapter = new CreatedAdapter(NewEvent.this, R.layout.event_info_help, selected_times);
+                userList.setAdapter(createAdapter);
+                createAdapter.notifyDataSetChanged();
                 Toast.makeText(NewEvent.this, "Added: " + spinnertext + "to your event!", Toast.LENGTH_LONG).show();
             }
         });
@@ -176,5 +189,29 @@ public class NewEvent extends AppCompatActivity {
         AlertDialog alert = builder.create();
 
         alert.show();
+    }
+
+    private class CreatedAdapter extends ArrayAdapter<String> {
+        private int layout;
+        private Context mContext;
+        private LayoutInflater mInflater;
+        private List<String> mDataSource;
+        public CreatedAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
+            super(context, resource, objects);
+            layout = resource;
+            mDataSource = objects;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Get view for row item
+            mInflater = LayoutInflater.from(getContext());
+            View rowView = mInflater.inflate(R.layout.event_info_help, parent, false);
+            TextView loc = (TextView)rowView.findViewById(R.id.textView);
+            loc.setText(mDataSource.get(position));
+
+            return rowView;
+        }
     }
 }

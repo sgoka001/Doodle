@@ -95,8 +95,8 @@
 
     <TextView
         android:id="@+id/LocName"
-        android:layout_width="247dp"
-        android:layout_height="157dp"
+        android:layout_width="227dp"
+        android:layout_height="65dp"
         android:layout_marginBottom="105dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -117,11 +117,12 @@
         android:layout_height="30dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="148dp"
         android:text="Address:"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
@@ -143,5 +144,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2"
         app:layout_constraintVertical_bias="0.087" />
+
+    <ListView
+        android:id="@+id/listdates"
+        android:layout_width="319dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/button4"
+        tools:layout_editor_absoluteX="21dp" />
 
 </android.support.constraint.ConstraintLayout>
