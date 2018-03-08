@@ -497,8 +497,12 @@ public class Polling extends AppCompatActivity {
                             .setSummary(newDesc.getText().toString())
                             .setLocation(((TextView)findViewById(R.id.txt_location)).getText().toString());
 
+                    Log.v("summary", newDesc.getText().toString());
+                    Log.v("location", ((TextView) findViewById(R.id.txt_location)).getText().toString());
+
                     String[] tmp = choiceList.get(0).split(" ");
                     String month = "";
+                    String hour = "";
                     Log.v("calendarTest", tmp[5] + '-' + 0 +  3 + "-" + tmp[2] + 'T' + tmp[3] + "+00:00");
                     if(tmp[1].equals("Jan"))
                         month = "01";
@@ -517,14 +521,19 @@ public class Polling extends AppCompatActivity {
                     else if(tmp[1].equals("Aug"))
                         month = "08";
                     else if(tmp[1].equals("Sept"))
-                        month = "08";
+                        month = "09";
                     else if(tmp[1].equals("Oct"))
                         month = "10";
                     else if(tmp[1].equals("Nov"))
                         month = "11";
                     else if(tmp[1].equals("Dec"))
                         month = "12";
-                    DateTime startDateTime = new DateTime(tmp[6] + '-' + month + "-" + tmp[2] + 'T' + tmp[3] + "-08:00");
+
+                    if(tmp[3].charAt(1) == ':')
+                        hour = "0" + tmp[3].charAt(0) + tmp[3].substring(1);
+                    else
+                        hour = tmp[3];
+                    DateTime startDateTime = new DateTime(tmp[6] + '-' + month + "-" + tmp[2] + 'T' + hour + "-08:00");
                     EventDateTime start = new EventDateTime()
                             .setDateTime(startDateTime)
                             .setTimeZone("America/Los_Angeles");
