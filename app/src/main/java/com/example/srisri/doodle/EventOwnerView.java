@@ -56,9 +56,6 @@ public class EventOwnerView extends AppCompatActivity{
     //used to make sure the app doesn't crash after deleting from database
     boolean DoOnce = true;
 
-    ListView userList;
-    CreatedAdapter createAdapter;
-    ArrayList<String> users = new ArrayList<String>();
 
     //create menu for deleting event
     @Override
@@ -375,47 +372,6 @@ public class EventOwnerView extends AppCompatActivity{
             }
         });
 
-        userList = findViewById(R.id.partUsers);
-        String eid = GlobalVars.getInstance().getEventID();
-        Log.v("Eid", eid);
-        database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("invites");
-        Query query = ref.orderByChild("eventId").equalTo(Integer.valueOf(eid));
-        Log.v("Query", query.toString());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null ) {
-                    Iterator ret = dataSnapshot.getChildren().iterator();
-                    //title=(ret.child("location").getValue().toString());//+ " \n" + ret.child("name").getValue().toString());
-                    //String lala = ret.child("name").getValue().toString();
-                    while(ret.hasNext()) {
-                        DataSnapshot rets = (DataSnapshot)ret.next();
-                        String user = rets.child("email").getValue().toString();
-                        Log.v("id", user);
-                        //GlobalVars.getInstance().setEventID(ret.getKey()+1);
-                        if(rets.child("declined").getValue().toString().equals("false")){
-                        users.add(user);
-                        createAdapter = new CreatedAdapter(EventOwnerView.this, R.layout.event_info_help, users);
-                        userList.setAdapter(createAdapter);
-                        createAdapter.notifyDataSetChanged();}
-                    }
-                    //adapters = new ArrayAdapter<String>(PollsCreated.this,R.layout.create_help, R.id.textView5,titles);
-                    //mListView.setAdapter(adapters);
-                    //adapters.notifyDataSetChanged();
-
-                    //GlobalVars.getInstance().setUser(user.getDisplayName(),user.getEmail(),ret.getKey().toString());
-                    //Log.v("key",ret.getKey().toString());
-                    //Button button = (Button) findViewById(R.id.textView3);
-                    //button.setText(title);
-                }
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
     }
 
@@ -471,27 +427,5 @@ public class EventOwnerView extends AppCompatActivity{
         dashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(dashboard);
     }
-    private class CreatedAdapter extends ArrayAdapter<String> {
-        private int layout;
-        private Context mContext;
-        private LayoutInflater mInflater;
-        private List<String> mDataSource;
-        public CreatedAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
-            super(context, resource, objects);
-            layout = resource;
-            mDataSource = objects;
-        }
 
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // Get view for row item
-            mInflater = LayoutInflater.from(getContext());
-            View rowView = mInflater.inflate(R.layout.event_info_help, parent, false);
-            TextView loc = (TextView)rowView.findViewById(R.id.textView);
-            loc.setText(mDataSource.get(position));
-
-            return rowView;
-        }
-    }
 }

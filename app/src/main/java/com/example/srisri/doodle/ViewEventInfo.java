@@ -37,7 +37,6 @@ public class ViewEventInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_event_info);
-        userList = findViewById(R.id.partUsers);
         String eid = GlobalVars.getInstance().getEventID();
         Log.v("Eid", eid);
         database = FirebaseDatabase.getInstance();
