@@ -301,7 +301,7 @@ public class EventOwnerView extends AppCompatActivity{
                                 //Create check boxes
                                 boxChoice = new CheckBox(EventOwnerView.this);
                                 boxChoice.setBackgroundColor(Color.parseColor("#ededed"));
-                                choiceName = key + ": " + choiceList.get(key).toString();
+                                choiceName = key + " : people voted " + choiceList.get(key).toString();
                                 boxChoice.setText(choiceName);
                                 boxChoice.setId(id);
                                 choiceId.add(id);
@@ -371,7 +371,7 @@ public class EventOwnerView extends AppCompatActivity{
             public void onClick(View v){
                 if(box.isChecked()){
                     //How to get all checked Boxes on page
-                    finalChoice = box.getText().toString().split(":")[0];
+                    finalChoice = box.getText().toString().split(" : people voted ")[0];
 //                    Toast.makeText(EventOwnerView.this, "choiceId size: " + choiceId.size(), Toast.LENGTH_LONG ).show();
                     for(Integer id = 0; id < choiceId.size(); id++){
                         Integer true_id = getResources().getIdentifier(choiceId.get(id).toString(), "id",getPackageName());
