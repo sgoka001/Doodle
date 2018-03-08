@@ -54,8 +54,8 @@ public class NewEvent extends AppCompatActivity {
             }
         });
         dropdown = findViewById(R.id.spinner);
-        String[] items = new String[]{"1", "2", "3", "4", "5", "6",
-                "7", "8", "9", "10","11", "12"};
+        String[] items = new String[]{"00", "01", "02", "03", "04", "05", "06",
+                "07", "08", "09", "10","11", "12"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
 
@@ -73,8 +73,8 @@ public class NewEvent extends AppCompatActivity {
 
         evAddOptionDT.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                String spinnertext = dropdown.getSelectedItem().toString() +
-                        dropdown2.getSelectedItem().toString() + dropdown3.getSelectedItem().toString();
+                String spinnertext = dropdown.getSelectedItem().toString() + ":" +
+                        dropdown2.getSelectedItem().toString() + ":00" + " " + dropdown3.getSelectedItem().toString();
                 selected_times.add(spinnertext);
                 Toast.makeText(NewEvent.this, "Added: " + spinnertext + "to your event!", Toast.LENGTH_LONG).show();
             }
