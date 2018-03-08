@@ -1,10 +1,14 @@
 package com.example.srisri.doodle;
 
+import android.accounts.AccountManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,14 +18,30 @@ import android.widget.Toast;
 import android.widget.TextView;
 
 
+import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.maps.model.Dash;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.accounts.GoogleAccountManager;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventReminder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 
 
 /**
@@ -300,6 +320,14 @@ public class Polling extends AppCompatActivity {
             }
         });
 
+        Button create_calendar_event = (Button)findViewById(R.id.create_google_calendar_event);
+        create_calendar_event.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                createCalendarEvent();
+            }
+        });
+
     }
 
     //OnClickListener for all choices but last: sets last choice as false if any clicked
@@ -420,6 +448,114 @@ public class Polling extends AppCompatActivity {
         Intent dashboard = new Intent(this, Dashboard.class);
         dashboard.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(dashboard);
+    }
+
+    GoogleAccountCredential mCredential;
+    String accountName;
+
+    public void createCalendarEvent(){
+        PackageManager pm = this.getApplicationContext().getPackageManager();
+        int hasPerm = pm.checkPermission(
+                android.Manifest.permission.GET_ACCOUNTS,
+                this.getApplicationContext().getPackageName());
+        if (hasPerm != PackageManager.PERMISSION_GRANTED) {
+            // do stuff
+            Log.v("calendar", "no permissions");
+            ActivityCompat.requestPermissions(Polling.this,
+                    new String[]{android.Manifest.permission.GET_ACCOUNTS},
+                    1);
+        }
+        Intent intent = AccountPicker.newChooseAccountIntent(null, null, new String[]{"com.google"}, false, null, null, null, null);
+        startActivityForResult(intent, 0);
+    }
+
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        if (requestCode == 0 && resultCode == RESULT_OK) {
+            accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+            GoogleAccountManager gam = new GoogleAccountManager(this);
+            final String[] SCOPES = { CalendarScopes.CALENDAR };
+
+//            Intent intent = AccountPicker.newChooseAccountIntent(null, null, new String[]{"com.google"}, false, null, null, null, null);
+//            startActivityForResult(intent, 0);
+
+
+            mCredential = GoogleAccountCredential.usingOAuth2(
+                    getApplicationContext(), Arrays.asList(SCOPES))
+                    .setSelectedAccountName(accountName);
+
+            new Thread(new Runnable() {
+                public void run() {
+                    HttpTransport transport = AndroidHttp.newCompatibleTransport();
+                    JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+                    mCredential.setSelectedAccountName("preston.giorgianni@gmail.com");
+                    com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
+                            transport, jsonFactory, mCredential)
+                            .setApplicationName("com.example.srisri.doodle")
+                            .build();
+
+
+                    Event event = new Event()
+                            .setSummary(newDesc.getText().toString())
+                            .setLocation(((TextView)findViewById(R.id.txt_location)).getText().toString());
+
+                    String[] tmp = choiceList.get(0).split(" ");
+                    String month = "";
+                    Log.v("calendarTest", tmp[5] + '-' + 0 +  3 + "-" + tmp[2] + 'T' + tmp[3] + "+00:00");
+                    if(tmp[1].equals("Jan"))
+                        month = "01";
+                    else if(tmp[1].equals("Feb"))
+                        month = "02";
+                    else if(tmp[1].equals("Mar"))
+                        month = "03";
+                    else if(tmp[1].equals("Apr"))
+                        month = "04";
+                    else if(tmp[1].equals("May"))
+                        month = "05";
+                    else if(tmp[1].equals("June"))
+                        month = "06";
+                    else if(tmp[1].equals("July"))
+                        month = "07";
+                    else if(tmp[1].equals("Aug"))
+                        month = "08";
+                    else if(tmp[1].equals("Sept"))
+                        month = "08";
+                    else if(tmp[1].equals("Oct"))
+                        month = "10";
+                    else if(tmp[1].equals("Nov"))
+                        month = "11";
+                    else if(tmp[1].equals("Dec"))
+                        month = "12";
+                    DateTime startDateTime = new DateTime(tmp[6] + '-' + month + "-" + tmp[2] + 'T' + tmp[3] + "-08:00");
+                    EventDateTime start = new EventDateTime()
+                            .setDateTime(startDateTime)
+                            .setTimeZone("America/Los_Angeles");
+                    event.setStart(start);
+                    event.setEnd(start);
+
+                    EventReminder[] reminderOverrides = new EventReminder[]{
+                            new EventReminder().setMethod("email").setMinutes(24 * 60),
+                            new EventReminder().setMethod("popup").setMinutes(10),
+                    };
+                    Event.Reminders reminders = new Event.Reminders()
+                            .setUseDefault(false)
+                            .setOverrides(Arrays.asList(reminderOverrides));
+                    event.setReminders(reminders);
+
+                    String calendarId = "primary";
+                    try {
+                        event = service.events().insert(calendarId, event).execute();
+                        Log.v("calendarTest", "event");
+                    } catch (UserRecoverableAuthIOException e) {
+                        startActivityForResult(e.getIntent(), 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.v("calendarTest", e.toString());
+                    }
+                    Log.v("calendarTest", "tried to set event");
+
+                }
+            }).start();
+        }
     }
 
 }
