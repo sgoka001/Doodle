@@ -164,6 +164,10 @@ public class Polling extends AppCompatActivity {
                             choiceList.add(String.valueOf(dsp.getValue(String.class))); //add result into array list
                         }
 
+                        if(choiceList.size() == 1){
+                            ((Button)findViewById(R.id.create_google_calendar_event)).setVisibility(View.VISIBLE);
+                        }
+
                         //Here Create a Check box for each choice and implement the action of each checkbox
                         //Include into scroll view
                         String testing = "First....";
