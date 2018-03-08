@@ -290,7 +290,6 @@ public class Polling extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(Polling.this, eventid,Toast.LENGTH_LONG).show();
             }
 
             @Override

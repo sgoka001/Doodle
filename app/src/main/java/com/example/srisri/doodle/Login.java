@@ -130,7 +130,7 @@ public class Login extends AppCompatActivity{
         super.onStart();
         Toast.makeText(Login.this,"OnStart",Toast.LENGTH_SHORT).show();
         final FirebaseUser user=authu.getCurrentUser();
-        Log.v("user2", user.getEmail());
+        //Log.v("user2", user.getEmail());
         final GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this);
 
         if(account!=null)

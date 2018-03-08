@@ -170,12 +170,14 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
         authu = FirebaseAuth.getInstance();
+        FirebaseUser user = authu.getCurrentUser();
+        GlobalVars.getInstance().setUserID(user.getEmail());
+        Log.v("useremail", GlobalVars.getUserEmail());
+        GlobalVars.getInstance().setUserName(user.getDisplayName());
         final ListView invites = (ListView)findViewById(R.id.event_invite_pending);
         acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, pendingInvites);
         invites.setAdapter(acceptInvites);
-
         DatabaseReference dbUserInvites = FirebaseDatabase.getInstance().getReference("invites");
         Query query = dbUserInvites.orderByChild("email").equalTo(GlobalVars.getUserEmail());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -230,6 +232,7 @@ public class Dashboard extends AppCompatActivity {
 
     public void getEventDetails(int eventId, final String key, final AcceptEventAdapter acceptInvites, final ListView list){
         Log.v("testing", "looking for event");
+        Log.v("testing2", GlobalVars.getUserEmail());
         DatabaseReference dbUserInvites = FirebaseDatabase.getInstance().getReference("Events");
         Query query = dbUserInvites.orderByKey().equalTo(String.valueOf(eventId));
         query.addListenerForSingleValueEvent(new ValueEventListener() {

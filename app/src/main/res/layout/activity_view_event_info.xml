@@ -19,7 +19,7 @@
         android:textSize="32sp" />
 
     <ListView
-        android:id="@+id/partUsers"
+        android:id="@+id/partUsers2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"

@@ -46,10 +46,12 @@ public class GlobalVars extends Application {
         inviteID = id;
     }
 
-    public void setUserId (String id)
+    public void setUserID (String id)
     {
-        userID = id;
+        userEmail = id;
     }
+
+    public void setUserName(String id){userName = id; }
 
     public void setInviteID(String id) {inviteID = id;}
 
