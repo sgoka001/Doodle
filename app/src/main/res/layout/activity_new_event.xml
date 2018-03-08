@@ -34,45 +34,33 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="60dp"
-        android:layout_height="31dp"
+        android:layout_width="113dp"
+        android:layout_height="69dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText"
         app:layout_constraintVertical_bias="0.515" />
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="61dp"
-        android:layout_height="31dp"
+        android:layout_width="98dp"
+        android:layout_height="61dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.035"
         app:layout_constraintStart_toEndOf="@+id/spinner"
         app:layout_constraintTop_toBottomOf="@+id/editText"
         app:layout_constraintVertical_bias="0.514" />
 
     <Spinner
         android:id="@+id/spinner3"
-        android:layout_width="65dp"
-        android:layout_height="31dp"
+        android:layout_width="98dp"
+        android:layout_height="61dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.007"
         app:layout_constraintStart_toEndOf="@+id/spinner2"
         app:layout_constraintTop_toBottomOf="@+id/editText"
         app:layout_constraintVertical_bias="0.541" />
@@ -81,14 +69,12 @@
         android:id="@+id/button3"
         android:layout_width="104dp"
         android:layout_height="43dp"
-        android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:onClick="finishEvent"
         android:text="@string/finish_event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -109,34 +95,33 @@
 
     <TextView
         android:id="@+id/LocName"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="247dp"
+        android:layout_height="157dp"
         android:layout_marginBottom="105dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
         android:text="Location Name"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="21sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="14dp"
-        android:layout_marginEnd="163dp"
-        android:layout_marginRight="163dp"
-        android:layout_marginStart="164dp"
-        android:layout_marginLeft="164dp"
-        android:layout_marginTop="104dp"
+        android:layout_width="199dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="72dp"
         android:text="Address:"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 

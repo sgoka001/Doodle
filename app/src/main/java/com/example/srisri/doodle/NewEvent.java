@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 
 import android.widget.ArrayAdapter;
@@ -54,7 +55,7 @@ public class NewEvent extends AppCompatActivity {
             }
         });
         dropdown = findViewById(R.id.spinner);
-        String[] items = new String[]{"00", "01", "02", "03", "04", "05", "06",
+        String[] items = new String[]{"01", "02", "03", "04", "05", "06",
                 "07", "08", "09", "10","11", "12"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
@@ -96,15 +97,29 @@ public class NewEvent extends AppCompatActivity {
                     Toast.makeText(NewEvent.this, "You never selected any times!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                int i;
-                for(i = 0; i < selected_dates.size(); ++i) {
-                    DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
-                    myRef.setValue(selected_dates.get(i));
-                }
-                for(int j = 0; j < selected_times.size(); ++j) {
-                    DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + i);
-                    myRef.setValue(selected_times.get(j));
-                    i = i + 1;
+                int k = 0;
+                for(int i = 0; i < selected_dates.size(); ++i) {
+                    String [] tmp = selected_dates.get(i).split(" ");
+                    for(int j = 0; j < selected_times.size(); ++j) {
+                        DatabaseReference myRef = database.getReference("Events/" + Integer.toString(eventID) + "/choices/" + k);
+                        String time = selected_times.get(j);
+                        int hour = 0;
+                        int min = 0;
+                        hour = Integer.parseInt(String.valueOf(time.charAt(0)) + time.charAt(1));
+                        if(time.charAt(9) == 'P' && hour != 12)
+                            hour += 12;
+                        else if(hour == 12 && time.charAt(9) == 'A')
+                            hour = 0;
+                        min = Integer.parseInt(String.valueOf(time.charAt(3)) + time.charAt(4));
+                        String minute = String.valueOf(min);
+                        if(min ==0)
+                            minute = "00";
+                        String h = String.valueOf(hour);
+                        if(hour==0)
+                            h = "00";
+                        myRef.setValue(tmp[0] + ' ' + tmp[1] + ' ' +  tmp[2]  + ' ' + hour + ':' + minute + ":00" + " " + ' ' + tmp[4] + ' ' + tmp [5]);
+                        k = k + 1;
+                    }
                 }
                 EditText evTitle = findViewById(R.id.editText);
                 String title = evTitle.getText().toString();

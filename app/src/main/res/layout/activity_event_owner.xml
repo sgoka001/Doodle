@@ -18,10 +18,12 @@
             android:id="@+id/btnFinalize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/yes"
-            android:layout_below="@+id/svEventOwner"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#00ffff"
             android:gravity="center"
-            android:background="#00ffff"/>
+            android:text="@string/yes" />
 
         <TextView
             android:id="@+id/txtTitle"
