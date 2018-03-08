@@ -35,7 +35,9 @@ public class NewEvent extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     List<String> selected_times = new ArrayList<>();
     List<String> selected_dates = new ArrayList<>();
-
+    Spinner dropdown;
+    Spinner dropdown2;
+    Spinner dropdown3;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -51,18 +53,18 @@ public class NewEvent extends AppCompatActivity {
                 startActivityForResult(intent, 1);
             }
         });
-        final Spinner dropdown = findViewById(R.id.spinner);
+        dropdown = findViewById(R.id.spinner);
         String[] items = new String[]{"1", "2", "3", "4", "5", "6",
                 "7", "8", "9", "10","11", "12"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
 
-        final Spinner dropdown2 = findViewById(R.id.spinner2);
+        dropdown2 = findViewById(R.id.spinner2);
         String[] items2 = new String[]{"00", "15", "30", "45"};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items2);
         dropdown2.setAdapter(adapter2);
 
-        final Spinner dropdown3 = findViewById(R.id.spinner3);
+        dropdown3 = findViewById(R.id.spinner3);
         String[] items3 = new String[]{"AM", "PM"};
         ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items3);
         dropdown3.setAdapter(adapter3);

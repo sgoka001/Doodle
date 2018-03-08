@@ -34,7 +34,7 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="82dp"
+        android:layout_width="60dp"
         android:layout_height="31dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -42,29 +42,29 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.156"
+        app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintVertical_bias="0.515" />
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="48dp"
-        android:layout_height="29dp"
+        android:layout_width="61dp"
+        android:layout_height="31dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintHorizontal_bias="0.035"
         app:layout_constraintStart_toEndOf="@+id/spinner"
         app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintVertical_bias="0.514" />
 
     <Spinner
         android:id="@+id/spinner3"
-        android:layout_width="39dp"
+        android:layout_width="65dp"
         android:layout_height="31dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
