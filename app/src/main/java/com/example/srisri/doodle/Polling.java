@@ -477,7 +477,7 @@ public class Polling extends AppCompatActivity {
 //            Intent intent = AccountPicker.newChooseAccountIntent(null, null, new String[]{"com.google"}, false, null, null, null, null);
 //            startActivityForResult(intent, 0);
 
-
+            Log.v("accountName", accountName);
             mCredential = GoogleAccountCredential.usingOAuth2(
                     getApplicationContext(), Arrays.asList(SCOPES))
                     .setSelectedAccountName(accountName);
@@ -486,7 +486,7 @@ public class Polling extends AppCompatActivity {
                 public void run() {
                     HttpTransport transport = AndroidHttp.newCompatibleTransport();
                     JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-                    mCredential.setSelectedAccountName("preston.giorgianni@gmail.com");
+                    mCredential.setSelectedAccountName(accountName);
                     com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
                             transport, jsonFactory, mCredential)
                             .setApplicationName("com.example.srisri.doodle")
@@ -497,8 +497,6 @@ public class Polling extends AppCompatActivity {
                             .setSummary(newDesc.getText().toString())
                             .setLocation(((TextView)findViewById(R.id.txt_location)).getText().toString());
 
-                    Log.v("summary", newDesc.getText().toString());
-                    Log.v("location", ((TextView) findViewById(R.id.txt_location)).getText().toString());
 
                     String[] tmp = choiceList.get(0).split(" ");
                     String month = "";
@@ -529,10 +527,20 @@ public class Polling extends AppCompatActivity {
                     else if(tmp[1].equals("Dec"))
                         month = "12";
 
-                    if(tmp[3].charAt(1) == ':')
-                        hour = "0" + tmp[3].charAt(0) + tmp[3].substring(1);
+                    String tem = "";
+                    if(tmp[3].charAt(1) == ':') {
+                        if(tmp[3].charAt(0) == '0') {
+                            tem = "23";
+                            hour = tem + tmp[3].substring(1);
+                        }
+                        else{
+                            tem = String.valueOf(Integer.valueOf(tmp[3].charAt(0)-1));
+                            hour = "0" + tem + tmp[3].substring(1);
+                        }
+                    }
                     else
                         hour = tmp[3];
+                    Log.v("hour", hour);
                     DateTime startDateTime = new DateTime(tmp[6] + '-' + month + "-" + tmp[2] + 'T' + hour + "-08:00");
                     EventDateTime start = new EventDateTime()
                             .setDateTime(startDateTime)
