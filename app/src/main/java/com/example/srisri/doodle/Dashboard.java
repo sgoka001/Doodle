@@ -322,7 +322,13 @@ public class Dashboard extends AppCompatActivity {
                         }
                     }
                 });
-
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("userEmail", "none");
+        editor.putString("password", "none");
+        editor.putString("name", "none");
+        editor.putString("id", "none");
+        editor.commit();
         Intent loginscreen = new Intent(this, Login.class);
         loginscreen.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         GlobalVars.logout();

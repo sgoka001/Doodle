@@ -527,21 +527,13 @@ public class Polling extends AppCompatActivity {
                     else if(tmp[1].equals("Dec"))
                         month = "12";
 
-                    String tem = "";
                     if(tmp[3].charAt(1) == ':') {
-                        if(tmp[3].charAt(0) == '0') {
-                            tem = "23";
-                            hour = tem + tmp[3].substring(1);
-                        }
-                        else{
-                            tem = String.valueOf(Integer.valueOf(tmp[3].charAt(0)-1));
-                            hour = "0" + tem + tmp[3].substring(1);
-                        }
+                            hour = "0" + tmp[3].charAt(0) + tmp[3].substring(1);
                     }
                     else
                         hour = tmp[3];
                     Log.v("hour", hour);
-                    DateTime startDateTime = new DateTime(tmp[6] + '-' + month + "-" + tmp[2] + 'T' + hour + "-08:00");
+                    DateTime startDateTime = new DateTime(tmp[6] + '-' + month + "-" + tmp[2] + 'T' + hour + "-07:00");
                     EventDateTime start = new EventDateTime()
                             .setDateTime(startDateTime)
                             .setTimeZone("America/Los_Angeles");

@@ -55,7 +55,6 @@ public class Login extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Toast.makeText(Login.this,"OnCreate",Toast.LENGTH_SHORT).show();
         Button loginBtn=(Button)findViewById(R.id.enter_button);
 
         loginBtn.setOnClickListener(new View.OnClickListener(){
@@ -128,7 +127,7 @@ public class Login extends AppCompatActivity{
     @Override
     protected void onStart(){
         super.onStart();
-        Toast.makeText(Login.this,"OnStart",Toast.LENGTH_SHORT).show();
+
         final FirebaseUser user=authu.getCurrentUser();
         //Log.v("user2", user.getEmail());
         final GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this);
