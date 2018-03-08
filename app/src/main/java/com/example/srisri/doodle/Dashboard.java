@@ -171,10 +171,23 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         authu = FirebaseAuth.getInstance();
+        final FirebaseUser user = authu.getCurrentUser();
+        Log.v("user2", user.getEmail());
+        final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        if (account != null) {
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+            GlobalVars.getInstance().setUserID(user.getEmail());
+            Log.v("useremail", GlobalVars.getUserEmail());
+            GlobalVars.getInstance().setUserName(user.getDisplayName());}
+
+
+        /*authu = FirebaseAuth.getInstance();
         FirebaseUser user = authu.getCurrentUser();
         GlobalVars.getInstance().setUserID(user.getEmail());
         Log.v("useremail", GlobalVars.getUserEmail());
-        GlobalVars.getInstance().setUserName(user.getDisplayName());
+        GlobalVars.getInstance().setUserName(user.getDisplayName());*/
         final ListView invites = (ListView)findViewById(R.id.event_invite_pending);
         acceptInvites = new AcceptEventAdapter(this, R.layout.event_accept_listview, pendingInvites);
         invites.setAdapter(acceptInvites);
